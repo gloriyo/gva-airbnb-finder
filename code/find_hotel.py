@@ -27,3 +27,13 @@ def input_prio(remaining_options):
     print("")
     
     return pick.lower(), remaining_options
+
+# User must sort in what their priority is
+options = ['food', 'transportation', 'parking', 'tourist attraction']
+
+prio1, options = input_prio(options)
+prio2, options = input_prio(options)
+prio3, options = input_prio(options)
+prio4 = options[0]
+
+priorities = prio1, prio2, prio3, prio4
