@@ -13,3 +13,17 @@ osm_data = osm_data.replace(['kick-scooter_rental', 'bicycle_rental', 'bus_stati
 osm_data = osm_data.replace(['bicycle_parking', 'motorcycle_parking', 'parking', 'parking_entrance', 'parking_space'], 'parking')
 osm_data = pd.concat([osm_data.drop(['tags'], axis=1), osm_data['tags'].apply(pd.Series)], axis=1)
 osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', osm_data['amenity'] == 'transportation', osm_data['amenity'] == 'parking']) | osm_data['tourism'].notna()]
+
+# Get user's picks
+def input_prio(remaining_options):
+    pick = input('Please pick your highest priority from the following options:\n - {}\n\n'.format('\n - '.join(remaining_options)))
+    pick = get_close_matches(pick, remaining_options, n=1, cutoff=0.6) # Typo correction
+
+    while pick.lower() not in remaining_options:
+        pick = input('\nThat was not an option. Please pick your highest priority from the following options:\n - {}\n\n'.format('\n - '.join(remaining_options)))
+
+    remaining_options.remove(pick.lower())
+
+    print("")
+    
+    return pick.lower(), remaining_options
