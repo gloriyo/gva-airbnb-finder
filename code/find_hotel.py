@@ -44,5 +44,3 @@ prio3, options = input_prio(options)
 prio4 = options[0]
 
 priorities = prio1, prio2, prio3, prio4
-
-print(priorities)
