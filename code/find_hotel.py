@@ -17,16 +17,23 @@ osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', o
 # Get user's picks
 def input_prio(remaining_options):
     pick = input('Please pick your highest priority from the following options:\n - {}\n\n'.format('\n - '.join(remaining_options)))
-    pick = get_close_matches(pick, remaining_options, n=1, cutoff=0.6) # Typo correction
+    try:
+        pick = get_close_matches(pick, remaining_options, n=1, cutoff=0.6)[0] # Typo correction
+    except IndexError:
+        pick = None
 
-    while pick.lower() not in remaining_options:
+    while pick not in remaining_options:
         pick = input('\nThat was not an option. Please pick your highest priority from the following options:\n - {}\n\n'.format('\n - '.join(remaining_options)))
+        try:
+            pick = get_close_matches(pick, remaining_options, n=1, cutoff=0.6)[0] # Typo correction
+        except IndexError:
+            pick = None
 
-    remaining_options.remove(pick.lower())
+    remaining_options.remove(pick)
 
     print("")
     
-    return pick.lower(), remaining_options
+    return pick, remaining_options
 
 # User must sort in what their priority is
 options = ['food', 'transportation', 'parking', 'tourist attraction']
@@ -37,3 +44,5 @@ prio3, options = input_prio(options)
 prio4 = options[0]
 
 priorities = prio1, prio2, prio3, prio4
+
+print(priorities)
