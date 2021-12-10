@@ -46,7 +46,7 @@ A few things I see that you could approach with this data:
 *   Any of these could be turned into “big data” problems by working with the global version of the data set. You can recreate that data as described above. -->
 
 Simon Fraser University
-CMPT 353 D100: Computational Data Science
+\nCMPT 353 D100: Computational Data Science
 Instrurctor: 
 CMPT-353-Project-OSM-Photos-and-Tours
 
