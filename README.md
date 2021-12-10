@@ -43,3 +43,43 @@ A few things I see that you could approach with this data:
 *   I feel like there are some parts of the city with more chain restaurants (e.g. McDonand's or White Spot franchises, not independently-owned places): is that true? Is there some way to find the chain places automatically and visualize their density relative to non-chains?
 *   If I was going to choose a hotel (or AirBnb), where should it be? What places have good amenities nearby?
 *   Any of these could be turned into “big data” problems by working with the global version of the data set. You can recreate that data as described above.
+
+## Author
+
+Group name : 353
+Gropu memeber 
+- Jarell Santella
+- Gloria Yoon 
+- Kukjin Kim
+
+
+## Data 
+
+- Provided data by instructor 
+- Collected data online 
+    1. Rental listings for Vancouver
+    2. Neighbourhood coordinate
+
+## Libararies 
+
+1. numpy
+2. pandas
+3. sys
+4. difflib
+5. folium
+6. lxml
+7. pyspark
+
+## Execution
+
+1.
+
+## Contribution 
+
+1. Jarell Santella: 
+2. Gloria Yoon: 
+3. Kukjin Kim: 
+
+## Reference
+1. Rental listinfs for Vancouver: http://insideairbnb.com/get-the-data.html
+
