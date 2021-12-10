@@ -1,5 +1,6 @@
 # CMPT-353-Project-OSM-Photos-and-Tours
-## The Idea
+
+<!-- ## The Idea
 
 The OSM data set has a huge collection of things you might have seen while walking around the city: [Canada Place](https://www.openstreetmap.org/way/223635729), [The Steam Clock](https://www.openstreetmap.org/node/703754423), [a bench](https://www.openstreetmap.org/node/3789883495), etc. Maybe you have walked by these and not even noticed. Wouldn't it be nice if they were pointed out to you?
 
@@ -42,7 +43,12 @@ A few things I see that you could approach with this data:
 *   If I was planning a tour of the city (by walking/biking/driving), where should I go? Are there paths that take me past an interesting variety of things?
 *   I feel like there are some parts of the city with more chain restaurants (e.g. McDonand's or White Spot franchises, not independently-owned places): is that true? Is there some way to find the chain places automatically and visualize their density relative to non-chains?
 *   If I was going to choose a hotel (or AirBnb), where should it be? What places have good amenities nearby?
-*   Any of these could be turned into “big data” problems by working with the global version of the data set. You can recreate that data as described above.
+*   Any of these could be turned into “big data” problems by working with the global version of the data set. You can recreate that data as described above. -->
+
+Simon Fraser University
+CMPT 353 D100: Computational Data Science
+Instrurctor: 
+CMPT-353-Project-OSM-Photos-and-Tours
 
 ## Author
 
