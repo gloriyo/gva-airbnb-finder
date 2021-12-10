@@ -52,7 +52,7 @@ A few things I see that you could approach with this data:
 
 ## Author
 
-Group name : 353
+Group name: 353
 <br/>Group memeber 
 - Jarell Santella
 - Gloria Yoon 
