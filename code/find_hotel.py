@@ -7,7 +7,7 @@ from difflib import get_close_matches
 # Getting data into Python
 osm_data = pd.read_json('amenities-vancouver.json.gz', lines=True)
 airbnb_data = pd.read_csv('listings.csv')
-neighbourhood_data = pd.read_csv('neighbourhood coords.csv')
+nbr_data = pd.read_csv('neighbourhood coords.csv')
 
 
 # Data cleaning - osm
@@ -25,8 +25,8 @@ osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', o
 # neighbourhood_data.to_csv('clean-neighbourhood.csv')
 
 # osm_data = pd.read_json('clean-amenities.json')
-airbnb_data = pd.read_csv('listings.csv')
-nbr_data = pd.read_csv('clean-neighbourhood.csv')
+# airbnb_data = pd.read_csv('listings.csv')
+# nbr_data = pd.read_csv('clean-neighbourhood.csv')
 
 nbr_options = nbr_data['neighbourhood'].to_numpy()
 
@@ -68,15 +68,17 @@ def input_nbr():
     return pick
 
 
-def haversine(pts):
+def haversine(pts, shl_loc):
     # radius of earth & haversine formula: 
     # https://en.wikipedia.org/wiki/Haversine_formula
 
     r = 6371000 # in meters
-    lat_diff = np.radians(pts['latitude']- nbr_loc['lat'])
-    lon_diff = np.radians(pts['longitude']- nbr_loc['lon'])
-    lat1 = np.radians(nbr_loc['lat'])
-    lat2 = np.radians(pts['latitude'])
+
+    # print(pts)
+    lat_diff = np.radians(pts['lat']- shl_loc['latitude'])
+    lon_diff = np.radians(pts['lon']- shl_loc['longitude'])
+    lat1 = np.radians(shl_loc['latitude'])
+    lat2 = np.radians(pts['lat'])
 
     h_sin2_lat = np.square(np.sin(lat_diff/2))
     h_sin2_lon = np.square(np.sin(lon_diff/2))
@@ -85,8 +87,9 @@ def haversine(pts):
 
     return h_dist
 
-def get_dist_to_nbr(nbr_loc, amn_data):
-    airbnb_dists = amn_data.apply(haversine)
+def get_dist_to_shelter(amn_data, shl_loc):
+    # print (amn_data)
+    airbnb_dists = amn_data.apply(haversine, shl_loc=shl_loc, axis=1)
     return airbnb_dists
 
 # def sort_by_priority(series):
@@ -94,8 +97,17 @@ def get_dist_to_nbr(nbr_loc, amn_data):
 
 def get_shelter_suggestions(nbr, airbnb_data, priorities):
     airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == nbr]
+    airbnb_data = airbnb_data.head(n=1)
 
-    # osm_data['dist'] = get_dist_to_nbr(nbr_loc, osm_data)
+    shl_loc = airbnb_data
+
+    curr_osm_data = osm_data
+    dists = get_dist_to_shelter(osm_data, shl_loc)
+
+
+    print (dists)
+    dists['index'] = dists.index
+    curr_osm_data['dist'] = dists['index']
     # curr_osm_data = osm_data[osm_data['dist'] < 10] # km? m?
 
     # https://stackoverflow.com/questions/52475458/how-to-sort-pandas-dataframe-with-a-key
