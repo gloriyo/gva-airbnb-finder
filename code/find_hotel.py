@@ -73,11 +73,16 @@ def haversine(pts, shl_loc):
     # https://en.wikipedia.org/wiki/Haversine_formula
 
     r = 6371000 # in meters
-
     # print(pts)
-    lat_diff = np.radians(pts['lat']- shl_loc['latitude'])
-    lon_diff = np.radians(pts['lon']- shl_loc['longitude'])
-    lat1 = np.radians(shl_loc['latitude'])
+    # print('amenitites_lat: ', pts['lat'])
+    # print(shl_loc)
+    # print('airbnb_lat: ')
+    # print( shl_loc.iloc[0]['latitude'])
+
+
+    lat_diff = np.radians(pts['lat']- shl_loc.iloc[0]['latitude'])
+    lon_diff = np.radians(pts['lon']- shl_loc.iloc[0]['longitude'])
+    lat1 = np.radians(shl_loc.iloc[0]['latitude'])
     lat2 = np.radians(pts['lat'])
 
     h_sin2_lat = np.square(np.sin(lat_diff/2))
@@ -88,30 +93,39 @@ def haversine(pts, shl_loc):
     return h_dist
 
 def get_dist_to_shelter(amn_data, shl_loc):
+    # print('amn_data')
     # print (amn_data)
     airbnb_dists = amn_data.apply(haversine, shl_loc=shl_loc, axis=1)
+    print(airbnb_dists)
     return airbnb_dists
 
 # def sort_by_priority(series):
 #     return series.apply(lambda x: )
 
 def get_shelter_suggestions(nbr, airbnb_data, priorities):
-    airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == nbr]
+    # airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == nbr]
+    # airbnb_data = airbnb_data.head(n=2)
+    # test data -- some neighbourhoods are not in the listing....
+    airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == 'Downtown Eastside']
     airbnb_data = airbnb_data.head(n=1)
 
     shl_loc = airbnb_data
-
+    print('shl_loc')
+    print(shl_loc)
     curr_osm_data = osm_data
     dists = get_dist_to_shelter(osm_data, shl_loc)
+    curr_osm_data['dist'] = dists
 
 
     print (dists)
-    dists['index'] = dists.index
-    curr_osm_data['dist'] = dists['index']
+    print(curr_osm_data)
+    # dists['index2'] = dists.index
+    # curr_osm_data['dist'] = dists['index2']
+    # print(curr_osm_data)
     # curr_osm_data = osm_data[osm_data['dist'] < 10] # km? m?
 
     # https://stackoverflow.com/questions/52475458/how-to-sort-pandas-dataframe-with-a-key
-    curr_osm_data = osm_data.sort_values(by=['amenity'], key=lambda x: x.apply(lambda y: priorities.index(y)))
+    curr_osm_data = curr_osm_data.sort_values(by=['amenity'], key=lambda x: x.apply(lambda y: priorities.index(y)))
     curr_osm_data.head(n=15)
 
 
@@ -122,9 +136,7 @@ def get_shelter_suggestions(nbr, airbnb_data, priorities):
 
 
 
-    # test data -- some neighbourhoods are not in the listing....
-    airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == 'Downtown Eastside']
-    airbnb_data.head()
+
 
     return airbnb_data, curr_osm_data
     
@@ -143,8 +155,8 @@ priorities = options.copy()
 
 # priorities = prio1, prio2, prio3, prio4
 
-nbr = input_nbr()
-
+# nbr = input_nbr()
+nbr = 'Downtown Eastside'
 curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
 nbr_loc = curr_nbr_data
 # nbr_loc = curr_nbr_data.values.tolist()
