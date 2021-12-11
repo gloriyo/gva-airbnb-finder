@@ -15,17 +15,40 @@ Group name: 353
 - Gloria Yoon 
 - Kukjin Kim
 
-## Data 
+See [contributions](#contributions)
 
-- Provided data by instructor
+## What The Project Does
+
+This project helps you find an ideal Airbnb for you in the Vancouver area. Given what amenities prioritize most (restaurants, tourist attractions, etc.) as well as the ratings of the Airbnb, the project will recommend you what Airbnb listings you should pick on. Furthermore, the project maps these amenities as well as the Airbnb listings on a map for easy visualization.
+
+## Execution
+
+1. Using command line, run `python3 find_hotel.py` in the directory that the project is in.
+2. You will be asked for user input on what you prioritize most around your Airbnb.
+3. After entering what you prioritize most, generate Airbnb suggestions. Two files are generated (see [generated](#generated)):
+    1. `top-airbnbs.csv`
+    2. `top-amenities.csv`
+4. Using command line again, run `python3 map_visual.py top-airbnbs.csv top-amenities.csv` in the directory that the project is in.
+5. One file, `result.html`, is generated. Visualizing the map of Vancouver with amenities and the recommended Airbnb listings.
+
+## Data
+
+#### Provided
+
+- Provided data by instructor using OSM ([file](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/amenities-vancouver.json.gz) `amenities-vancouver.json.gz`)
 - Data collected online
-    1. Vancouver Airbnb rental listings and their coordinates
-    2. Vancouver neighbourhoods and their coordinates
-    3. Vancouver parks and their coordinates
+    1. Vancouver Airbnb rental listings and their coordinates ([file](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/listings.csv.gz) `listings.csv.gz`)
+    2. Vancouver neighbourhoods and their coordinates ([file]https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/neighbourhood-coords.csv `neighbourgood-coords.csv`)
+    3. Vancouver parks and their coordinates ([file](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/parks.csv) `parks.csv`)
 
 See [references](#references).
 
-## Libararies 
+#### Generated
+
+- [File](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/top-airbnbs.csv) `top-airbnbs.csv`: the top 5 Airbnb listings recommended to the user
+- [File](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/top-amenities.csv) `top-amenities.csv`: the amenities around the Airbnb listings recommended to the user
+
+## Libararies
 
 1. [NumPy](https://numpy.org/)
 2. [pandas](https://pandas.pydata.org/)
@@ -36,11 +59,7 @@ See [references](#references).
 7. [PySpark](https://spark.apache.org/docs/latest/api/python/)
 8. [math](https://docs.python.org/3/library/math.html)
 
-## Execution
-
-1.
-
-## Contribution 
+## Contributions
 
 1. Jarell Santella: read Vancouver data on Airbnb listings, parks, and OSM amenities data into Python, clean the data, and interpret the data. Gets user input on priorities to pass into algorithm which recommends them which Airbnb listing is best for them. Cleaning and refactoring code.
 2. Gloria Yoon: 
