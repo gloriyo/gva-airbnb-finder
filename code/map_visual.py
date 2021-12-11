@@ -6,7 +6,7 @@ from folium import plugins
 
 amenity = pd.read_json('clean-amenities.json')
 top_airbnb = pd.read_csv('top_airbnb_data.csv')
-neighbourhood_coord = pd.read_csv('neighbourhood coords.csv', index_col = 'neighbourhood')
+neighbourhood_coord = pd.read_csv('neighbourhood-coords.csv', index_col = 'neighbourhood')
 
 # create basemap (user's neighbourhood)
 baseLat = top_airbnb.at[0,'latitude']
