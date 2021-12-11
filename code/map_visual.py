@@ -86,12 +86,12 @@ def main(top_airbnb_data, clean_amenities_data,):
     m.add_child(mini_map)
     
     # add ledend of map 
-    image_file = 'legend.PNG'
+    image_file = 'legend.png'
     legend = FloatImage(image_file, bottom=2, left=2)
     m.add_child(legend)
     
     # make html file 
-    m.save('mapResult.html')
+    m.save('result.html')
 
 
 if __name__=='__main__':
