@@ -98,6 +98,4 @@ if __name__=='__main__':
     in_directory = sys.argv[1]
     out_directory = sys.argv[2]
     
-    top_airbnb_data = 'top-airbnb-data.csv'
-    clean_amenities_data = 'clean-amenities.json'
-    main(top_airbnb_data, clean_amenities_data,)
+    main(in_directory, out_directory)
