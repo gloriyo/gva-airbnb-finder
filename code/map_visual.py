@@ -13,10 +13,10 @@ def distance(first_hotel_lat1, first_hotel_lon1, lat2,lon2):
     return 12742 * asin(sqrt(a)) #2*R*asin...
 
 # Reference: https://www.youtube.com/watch?v=9biKWoGK3j0
-def main(top_airbnb_data, clean_amenities_data,):
+def main(top_airbnb_data, amenities_data):
     # Read data 
     top_airbnb = pd.read_csv(top_airbnb_data)  
-    amenity = pd.read_json(clean_amenities_data)
+    amenity = pd.read_json(amenities_data)
     neighbourhood_coord = pd.read_csv('neighbourhood-coords.csv', index_col = 'neighbourhood')
     
     # Create basemap (first recommendation hotel is middle)
@@ -58,11 +58,11 @@ def main(top_airbnb_data, clean_amenities_data,):
         distanceBtw.append(distance(first_hotel_lat, first_hotel_lon, amenity.at[i,'lat'], amenity.at[i,'lon']))
     amenity['distnace'] = distanceBtw
     
-    # close amenities within 3km from first hotel
+    # close amenities_data within 3km from first hotel
     closeAmenity = amenity.loc[amenity['distnace']<=3]
     
     
-    # plot amenities 
+    # plot amenities_data 
     for i, row in closeAmenity.iterrows():
         lat = closeAmenity.at[i,'lat']
         lng = closeAmenity.at[i,'lon']
