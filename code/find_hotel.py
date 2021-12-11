@@ -153,11 +153,12 @@ curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
 nbr_loc = curr_nbr_data
  
 top_airbnb_data = pd.DataFrame()
+top_osm_data = pd.DataFrame()
 for i in range (5):
     # top_airbnb = airbnb_data.sample()
-    top_airbnb = get_shelter_suggestions(nbr, airbnb_data, priorities)
+    top_airbnb, curr_osm_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
     top_airbnb_data = top_airbnb_data.append(top_airbnb,ignore_index=True)
-
+    top_osm_data = top_osm_data.append(curr_osm_data,ignore_index=True)
     # top_airbnb.to_csv('my_csv.csv', mode='a', header=False)
 
 # top_airbnb_data = airbnb_data.sample(n=5)
@@ -165,3 +166,4 @@ for i in range (5):
 # top_airbnb_data, top_amenity_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
 # print(airbnb_data)
 top_airbnb_data.to_csv('top_airbnbs.csv')
+top_osm_data.to_csv('top_amenities.csv')
