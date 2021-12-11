@@ -7,7 +7,7 @@ from difflib import get_close_matches
 # Getting data into Python
 osm_data = pd.read_json('amenities-vancouver.json.gz', lines=True)
 airbnb_data = pd.read_csv('listings.csv')
-nbr_data = pd.read_csv('neighbourhood coords.csv')
+nbr_data = pd.read_csv('neighbourhood-coords.csv')
 
 
 # Data cleaning - osm
