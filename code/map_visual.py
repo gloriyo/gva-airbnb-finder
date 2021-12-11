@@ -39,9 +39,10 @@ def main(top_airbnb_data, clean_amenities_data,):
     for i, row in top_airbnb.iterrows():
         lat = top_airbnb.at[i,'latitude']
         lng = top_airbnb.at[i,'longitude']
+        url = top_airbnb.at[i,'listing_url']
     
         name = top_airbnb.at[i,'name']
-        popup = "#" + str(i+1) + "\nName: " + str(name)
+        popup = "#" + str(i+1) + "\nName: " + str(name) + "\nURL: " + url
 
         if i == 0:
             color = 'red'
