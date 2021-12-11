@@ -1,4 +1,3 @@
-##reference:  https://www.youtube.com/watch?v=9biKWoGK3j0
 import pandas as pd 
 import folium 
 from folium.plugins import MarkerCluster
@@ -13,10 +12,10 @@ def distance(first_hotel_lat1, first_hotel_lon1, lat2,lon2):
     return 12742 * asin(sqrt(a)) #2*R*asin...
 
 # Reference: https://www.youtube.com/watch?v=9biKWoGK3j0
-def main(top_airbnb_data, amenities_data):
+def main(top_airbnb_data, clean_amenities_data,):
     # Read data 
     top_airbnb = pd.read_csv(top_airbnb_data)  
-    amenity = pd.read_json(amenities_data)
+    amenity = pd.read_csv(clean_amenities_data)
     neighbourhood_coord = pd.read_csv('neighbourhood-coords.csv', index_col = 'neighbourhood')
     
     # Create basemap (first recommendation hotel is middle)
@@ -58,24 +57,26 @@ def main(top_airbnb_data, amenities_data):
         distanceBtw.append(distance(first_hotel_lat, first_hotel_lon, amenity.at[i,'lat'], amenity.at[i,'lon']))
     amenity['distnace'] = distanceBtw
     
-    # close amenities_data within 3km from first hotel
+    # close amenities within 3km from first hotel
     closeAmenity = amenity.loc[amenity['distnace']<=3]
     
     
-    # plot amenities_data 
+    # plot amenities 
     for i, row in closeAmenity.iterrows():
         lat = closeAmenity.at[i,'lat']
         lng = closeAmenity.at[i,'lon']
 
         popup = "#" + str(closeAmenity.at[i,'amenity']) + "\nName: " + str(closeAmenity.at[i,'name'])
 
-        # sustenance = green, transportation = purple, parking = orange, tourism = pink
+        # sustenance = gray transportation = purple, parking = orange, tourism = pink, park = gree
         if closeAmenity.at[i,'amenity'] == 'sustenance':
-            color = 'green'
+            color = 'gray'
         elif closeAmenity.at[i,'amenity'] == 'transportation':
             color = 'purple'    
         elif closeAmenity.at[i,'amenity'] == 'parking':
-            color = 'orange'            
+            color = 'orange'
+        elif closeAmenity.at[i,'amenity'] == 'park':
+            color = 'green'                       
         else:
             color = 'pink'
 
@@ -86,16 +87,19 @@ def main(top_airbnb_data, amenities_data):
     m.add_child(mini_map)
     
     # add ledend of map 
-    image_file = 'legend.png'
+    image_file = 'legend.PNG'
     legend = FloatImage(image_file, bottom=2, left=2)
     m.add_child(legend)
     
     # make html file 
-    m.save('result.html')
+    m.save('mapResult.html')
+    
 
 
 if __name__=='__main__':
-    in_directory = sys.argv[1]
-    out_directory = sys.argv[2]
+    top_airbnb_data = sys.argv[1]
+    clean_amenities_data = sys.argv[2]
     
-    main(in_directory, out_directory)
+    # top_airbnb_data = 'top-airbnb-data.csv'
+    # clean_amenities_data = 'clean-amenities.json'
+    main(top_airbnb_data, clean_amenities_data)
