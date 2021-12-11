@@ -29,8 +29,6 @@ parks_data['amenity'] = 'park'
 # Combine parks and osm data to have list of amenities
 combined_data = pd.concat([osm_data, parks_data], ignore_index=True)
 
-nbr_options = nbr_data['neighbourhood'].to_numpy()
-
 # Get user's highest priority in amenities
 def input_prio(remaining_options):
     pick = input('Please pick your highest priority from the following options:\n - {}\n\n'.format('\n - '.join(remaining_options)))
@@ -46,7 +44,8 @@ def input_prio(remaining_options):
         except IndexError:
             pick = None
 
-    remaining_options.remove(pick)
+    #remaining_options.remove(pick)
+    remaining_options = remaining_options[remaining_options != pick]
 
     print("")
     
@@ -75,9 +74,9 @@ def haversine(pts, airbnb_data):
 
     r = 6371000 # in meters
 
-    lat_diff = np.radians(pts['lat']- airbnb_data.iloc[0]['latitude'])
-    lon_diff = np.radians(pts['lon']- airbnb_data.iloc[0]['longitude'])
-    lat1 = np.radians(airbnb_data.iloc[0]['latitude'])
+    lat_diff = np.radians(pts['lat'] - airbnb_data['latitude'])
+    lon_diff = np.radians(pts['lon'] - airbnb_data['longitude'])
+    lat1 = np.radians(airbnb_data['latitude'])
     lat2 = np.radians(pts['lat'])
 
     h_sin2_lat = np.square(np.sin(lat_diff/2))
@@ -90,7 +89,6 @@ def haversine(pts, airbnb_data):
 def get_dist_to_shelter(amn_data, airbnb_data):
 
     airbnb_dists = amn_data.apply(haversine, airbnb_data=airbnb_data, axis=1)
-    print(airbnb_dists)
     
     return airbnb_dists
 
@@ -122,7 +120,8 @@ def get_amenities(curr_airbnb_data):
     return all_top_amns
 
 # User must sort in what their priority is
-options = ['sustenance', 'transportation', 'parking', 'tourism', 'parks']
+#options = ['sustenance', 'transportation', 'parking', 'tourism', 'parks']
+options = np.unique(combined_data['amenity'])
 
 prio1, options = input_prio(options)
 prio2, options = input_prio(options)
@@ -131,6 +130,8 @@ prio4, options = input_prio(options)
 prio5 = options[0]
 
 priorities = [prio1, prio2, prio3, prio4, prio5]
+
+nbr_options = nbr_data['neighbourhood'].to_numpy()
 
 nbr = input_nbr()
 curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
