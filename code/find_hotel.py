@@ -6,7 +6,7 @@ from difflib import get_close_matches
 '''
 # Getting data into Python
 osm_data = pd.read_json('amenities-vancouver.json.gz', lines=True)
-airbnb_data = pd.read_csv('listings.csv')
+airbnb_data = pd.read_csv('listings.csv.gz')
 nbr_data = pd.read_csv('neighbourhood-coords.csv')
 parks_data = pd.read_csv('parks.csv', ';')
 
@@ -19,6 +19,10 @@ osm_data = pd.concat([osm_data.drop(['tags'], axis=1), osm_data['tags'].apply(pd
 osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', osm_data['amenity'] == 'transportation', osm_data['amenity'] == 'parking']) | osm_data['tourism'].notna()]
 # osm_data.to_json('clean-amenities.json')
 
+# Data cleaning - airbnb
+airbnb_data = airbnb_data[['name', 'latitude', 'longitude', 'listing_url']]
+
+# Data cleaning - parks
 parks_data = parks_data[['Name', 'GoogleMapDest']]
 parks_data[['latitude', 'longitude']] = parks_data['GoogleMapDest'].str.split(',', 1, expand=True)
 parks_data = parks_data.drop('GoogleMapDest', axis=1)
