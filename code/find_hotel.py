@@ -19,7 +19,7 @@ osm_data = pd.concat([osm_data.drop(['tags'], axis=1), osm_data['tags'].apply(pd
 osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', osm_data['amenity'] == 'transportation', osm_data['amenity'] == 'parking']) | osm_data['tourism'].notna()]
 # osm_data.to_json('clean-amenities.json')
 
-parks_data = parks_data.drop(['ParkID', 'Official', 'Advisories', 'SpecialFeatures', 'Facilities', 'Washrooms', 'StreetNumber', 'StreetName', 'EWStreet', 'NSStreet', 'NeighbourhoodName', 'NeighbourhoodURL', 'Hectare'], axis=1)
+parks_data = parks_data[['Name', 'GoogleMapDest']]
 parks_data[['latitude', 'longitude']] = parks_data['GoogleMapDest'].str.split(',', 1, expand=True)
 parks_data = parks_data.drop('GoogleMapDest', axis=1)
 
@@ -146,7 +146,7 @@ def get_shelter_suggestions(nbr, airbnb_data, priorities):
 
 # User must sort in what their priority is
 # options = ['food', 'transportation', 'parking', 'tourist attraction']
-options = ['sustenance', 'transportation', 'parking', 'tourism']
+options = ['sustenance', 'transportation', 'parking', 'tourism', 'parks']
 
 
 priorities = options.copy()
