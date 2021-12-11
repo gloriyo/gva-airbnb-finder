@@ -27,7 +27,7 @@ parks_data = parks_data.drop('GoogleMapDest', axis=1)
 parks_data['amenity'] = 'park'
 
 # Combine parks and osm data to have list of amenities
-combined_data = pd.concat(['osm_data', 'parks_data'], ignore_index=True)
+combined_data = pd.concat([osm_data, parks_data], ignore_index=True)
 
 nbr_options = nbr_data['neighbourhood'].to_numpy()
 
