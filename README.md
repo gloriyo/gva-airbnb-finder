@@ -42,7 +42,7 @@ See [references](#references).
 
 ## Contribution 
 
-1. Jarell Santella: read Vancouver data on Airbnb listings, parks, and OSM amenities data into Python, clean the data, and interpret the data. Gets user input on priorities to pass into algorithm which recommends them which Airbnb listing is best for them.
+1. Jarell Santella: read Vancouver data on Airbnb listings, parks, and OSM amenities data into Python, clean the data, and interpret the data. Gets user input on priorities to pass into algorithm which recommends them which Airbnb listing is best for them. Cleaning and refactoring code.
 2. Gloria Yoon: 
 3. Kukjin Kim: 
 
