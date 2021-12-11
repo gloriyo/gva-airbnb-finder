@@ -21,7 +21,7 @@ osm_data.loc[np.logical_not(osm_data['amenity'].isin(['sustenance', 'transportat
 # osm_data.to_json('clean-amenities.json')
 
 # Data cleaning - airbnb
-airbnb_data = airbnb_data[['name', 'latitude', 'longitude', 'listing_url', 'number_of_reviews_ltm', 'review_scores_rating']]
+airbnb_data = airbnb_data[['name', 'neighbourhood_cleansed','latitude', 'longitude', 'listing_url', 'number_of_reviews_ltm', 'review_scores_rating']]
 
 # Data cleaning - parks
 parks_data = parks_data[['Name', 'GoogleMapDest']]
@@ -107,15 +107,14 @@ def get_dist_to_shelter(amn_data, shl_loc):
     print(airbnb_dists)
     return airbnb_dists
 
-# def sort_by_priority(series):
-#     return series.apply(lambda x: )
 
 def get_shelter_suggestions(nbr, airbnb_data, priorities):
     # airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == nbr]
     # airbnb_data = airbnb_data.head(n=2)
     # test data -- some neighbourhoods are not in the listing....
-    airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == 'Downtown Eastside']
+    airbnb_data = airbnb_data[airbnb_data['neighbourhood_cleansed'] == 'Downtown Eastside']
     airbnb_data = airbnb_data.head(n=1)
+    # airbnb_data.sample()
 
     shl_loc = airbnb_data
     print('shl_loc')
@@ -124,33 +123,17 @@ def get_shelter_suggestions(nbr, airbnb_data, priorities):
     dists = get_dist_to_shelter(osm_data, shl_loc)
     curr_osm_data['dist'] = dists
 
-
     print (dists)
     print(curr_osm_data)
-    # dists['index2'] = dists.index
-    # curr_osm_data['dist'] = dists['index2']
-    # print(curr_osm_data)
-    # curr_osm_data = osm_data[osm_data['dist'] < 10] # km? m?
 
     # https://stackoverflow.com/questions/52475458/how-to-sort-pandas-dataframe-with-a-key
     curr_osm_data = curr_osm_data.sort_values(by=['amenity'], key=lambda x: x.apply(lambda y: priorities.index(y)))
     curr_osm_data.head(n=15)
 
-
-    # curr_osm_data = osm_data[osm_data['dist'] < 10] # km? m?
-
-    # airbnb_dist = airbnb_dist.sort_values(by=[])
-    # osm_data['nbr_dist'] = osm_data
-
-
-
-
-
     return airbnb_data, curr_osm_data
     
 
 # User must sort in what their priority is
-# options = ['food', 'transportation', 'parking', 'tourist attraction']
 options = ['sustenance', 'transportation', 'parking', 'tourism', 'parks']
 
 
@@ -168,7 +151,17 @@ priorities = options.copy()
 nbr = 'Downtown Eastside'
 curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
 nbr_loc = curr_nbr_data
-# nbr_loc = curr_nbr_data.values.tolist()
-# returns top 5
-top_airbnb_data, top_amenity_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
+ 
+top_airbnb_data = pd.DataFrame()
+for i in range (5):
+    # top_airbnb = airbnb_data.sample()
+    top_airbnb = get_shelter_suggestions(nbr, airbnb_data, priorities)
+    top_airbnb_data = top_airbnb_data.append(top_airbnb,ignore_index=True)
+
+    # top_airbnb.to_csv('my_csv.csv', mode='a', header=False)
+
+# top_airbnb_data = airbnb_data.sample(n=5)
+
+# top_airbnb_data, top_amenity_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
 # print(airbnb_data)
+top_airbnb_data.to_csv('top_airbnbs.csv')
