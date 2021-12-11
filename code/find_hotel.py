@@ -70,16 +70,10 @@ def haversine(pts, airbnb_data):
     # https://en.wikipedia.org/wiki/Haversine_formula
 
     r = 6371000 # in meters
-    # print(pts)
-    # print('amenitites_lat: ', pts['lat'])
-    # print(airbnb_data)
-    # print('airbnb_lat: ')
-    # print( airbnb_data.iloc[0]['latitude'])
 
-
-    lat_diff = np.radians(pts['lat']- airbnb_data.iloc[0]['latitude'])
-    lon_diff = np.radians(pts['lon']- airbnb_data.iloc[0]['longitude'])
-    lat1 = np.radians(airbnb_data.iloc[0]['latitude'])
+    lat_diff = np.radians(pts['lat']- airbnb_data['latitude'])
+    lon_diff = np.radians(pts['lon']- airbnb_data['longitude'])
+    lat1 = np.radians(airbnb_data['latitude'])
     lat2 = np.radians(pts['lat'])
 
     h_sin2_lat = np.square(np.sin(lat_diff/2))
@@ -90,8 +84,6 @@ def haversine(pts, airbnb_data):
     return h_dist
 
 def get_dist_to_shelter(amn_data, airbnb_data):
-    # print('amn_data')
-    # print (amn_data)
     airbnb_dists = amn_data.apply(haversine, airbnb_data=airbnb_data, axis=1)
     print(airbnb_dists)
     return airbnb_dists
@@ -99,20 +91,24 @@ def get_dist_to_shelter(amn_data, airbnb_data):
 
 def get_shelter_suggestions(nbr, airbnb_data, priorities):
     # airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == nbr]
-    # airbnb_data = airbnb_data.head(n=2)
+
     # test data -- some neighbourhoods are not in the listing....
     airbnb_data = airbnb_data[airbnb_data['neighbourhood_cleansed'] == nbr]
-    # airbnb_data = airbnb_data.head(n=1)
-    airbnb_data = airbnb_data.sample(n=1)
+
+
+    airbnb_data = airbnb_data.nlargest(5, ['review_scores_rating', 'number_of_reviews_ltm'])
+    return airbnb_data
+
+
+def get_amenities(curr_osm_data, curr_airbnb_data):
 
     print(airbnb_data)
     curr_osm_data = osm_data
-    dists = get_dist_to_shelter(osm_data, airbnb_data)
+    dists = get_dist_to_shelter(curr_osm_data, curr_airbnb_data)
     curr_osm_data['dist'] = dists
 
     print (dists)
     print(curr_osm_data)
-
     # https://stackoverflow.com/questions/52475458/how-to-sort-pandas-dataframe-with-a-key
     curr_osm_data = curr_osm_data.sort_values(by=['amenity'], key=lambda x: x.apply(lambda y: priorities.index(y)))
     # curr_osm_data.head(n=15)
@@ -121,13 +117,12 @@ def get_shelter_suggestions(nbr, airbnb_data, priorities):
     curr_osm_prio3 = curr_osm_data[curr_osm_data['amenity']== priorities[2]].nsmallest(3, 'dist')
     curr_osm_prio4 = curr_osm_data[curr_osm_data['amenity']== priorities[3]].nsmallest(2, 'dist')
     
-    # curr_osm_data.head(n=15)
 
     amn_dfs = [curr_osm_prio1, curr_osm_prio2, curr_osm_prio3, curr_osm_prio4]   
 
     all_top_amns = pd.concat(amn_dfs)
 
-    return airbnb_data, all_top_amns
+    return all_top_amns
     
 
 # User must sort in what their priority is
@@ -150,17 +145,18 @@ curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
 nbr_loc = curr_nbr_data
  
 top_airbnb_data = pd.DataFrame()
+
+top_airbnb_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
+print(top_airbnb_data.iloc[0])
+
 top_osm_data = pd.DataFrame()
+
+
 for i in range (5):
-    # top_airbnb = airbnb_data.sample()
-    top_airbnb, curr_osm_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
-    top_airbnb_data = top_airbnb_data.append(top_airbnb,ignore_index=True)
+    curr_osm_data = get_amenities(osm_data, top_airbnb_data.iloc[i])
     top_osm_data = top_osm_data.append(curr_osm_data,ignore_index=True)
-    # top_airbnb.to_csv('my_csv.csv', mode='a', header=False)
 
-# top_airbnb_data = airbnb_data.sample(n=5)
 
-# top_airbnb_data, top_amenity_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
-# print(airbnb_data)
+
 top_airbnb_data.to_csv('top-airbnbs.csv')
 top_osm_data.to_csv('top-amenities.csv')
