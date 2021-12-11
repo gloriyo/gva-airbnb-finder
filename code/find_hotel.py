@@ -165,5 +165,5 @@ for i in range (5):
 
 # top_airbnb_data, top_amenity_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
 # print(airbnb_data)
-top_airbnb_data.to_csv('top_airbnbs.csv')
-top_osm_data.to_csv('top_amenities.csv')
+top_airbnb_data.to_csv('top-airbnbs.csv')
+top_osm_data.to_csv('top-amenities.csv')
