@@ -22,12 +22,16 @@ airbnb_data = airbnb_data[['name', 'neighbourhood_cleansed','latitude', 'longitu
 
 # Data cleaning - parks
 parks_data = parks_data[['Name', 'GoogleMapDest']]
-parks_data[['latitude', 'longitude']] = parks_data['GoogleMapDest'].str.split(',', 1, expand=True)
+parks_data[['lat', 'lon']] = parks_data['GoogleMapDest'].str.split(',', 1, expand=True)
 parks_data = parks_data.drop('GoogleMapDest', axis=1)
+parks_data['amenity'] = 'park'
+
+# Combine parks and osm data to have list of amenities
+combined_data = pd.concat(['osm_data', 'parks_data'], ignore_index=True)
 
 nbr_options = nbr_data['neighbourhood'].to_numpy()
 
-# Get user's picks
+# Get user's highest priority in amenities
 def input_prio(remaining_options):
     pick = input('Please pick your highest priority from the following options:\n - {}\n\n'.format('\n - '.join(remaining_options)))
     try:
@@ -48,7 +52,7 @@ def input_prio(remaining_options):
     
     return pick, remaining_options
 
-
+# Get user's preferred neighbourhood
 def input_nbr():
     pick = input('Please pick your preferred neighbourhood:\n - {}\n\n'.format('\n - '.join(nbr_options)))
     try:
@@ -71,9 +75,9 @@ def haversine(pts, airbnb_data):
 
     r = 6371000 # in meters
 
-    lat_diff = np.radians(pts['lat']- airbnb_data['latitude'])
-    lon_diff = np.radians(pts['lon']- airbnb_data['longitude'])
-    lat1 = np.radians(airbnb_data['latitude'])
+    lat_diff = np.radians(pts['lat']- airbnb_data.iloc[0]['latitude'])
+    lon_diff = np.radians(pts['lon']- airbnb_data.iloc[0]['longitude'])
+    lat1 = np.radians(airbnb_data.iloc[0]['latitude'])
     lat2 = np.radians(pts['lat'])
 
     h_sin2_lat = np.square(np.sin(lat_diff/2))
@@ -84,79 +88,61 @@ def haversine(pts, airbnb_data):
     return h_dist
 
 def get_dist_to_shelter(amn_data, airbnb_data):
+
     airbnb_dists = amn_data.apply(haversine, airbnb_data=airbnb_data, axis=1)
     print(airbnb_dists)
+    
     return airbnb_dists
 
-
-def get_shelter_suggestions(nbr, airbnb_data, priorities):
-    # airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == nbr]
+def get_shelter_suggestions(nbr):
 
     # test data -- some neighbourhoods are not in the listing....
-    airbnb_data = airbnb_data[airbnb_data['neighbourhood_cleansed'] == nbr]
+    airbnb_nbr = airbnb_data[airbnb_data['neighbourhood_cleansed'] == nbr]
+    airbnb_nbr = airbnb_nbr.nlargest(5, ['review_scores_rating', 'number_of_reviews_ltm'])
 
-
-    airbnb_data = airbnb_data.nlargest(5, ['review_scores_rating', 'number_of_reviews_ltm'])
-    return airbnb_data
-
-
-def get_amenities(curr_osm_data, curr_airbnb_data):
-
-    print(airbnb_data)
-    curr_osm_data = osm_data
-    dists = get_dist_to_shelter(curr_osm_data, curr_airbnb_data)
-    curr_osm_data['dist'] = dists
-
-    print (dists)
-    print(curr_osm_data)
-    # https://stackoverflow.com/questions/52475458/how-to-sort-pandas-dataframe-with-a-key
-    curr_osm_data = curr_osm_data.sort_values(by=['amenity'], key=lambda x: x.apply(lambda y: priorities.index(y)))
-    # curr_osm_data.head(n=15)
-    curr_osm_prio1 = curr_osm_data[curr_osm_data['amenity']== priorities[0]].nsmallest(7, 'dist')
-    curr_osm_prio2 = curr_osm_data[curr_osm_data['amenity']== priorities[1]].nsmallest(5, 'dist')
-    curr_osm_prio3 = curr_osm_data[curr_osm_data['amenity']== priorities[2]].nsmallest(3, 'dist')
-    curr_osm_prio4 = curr_osm_data[curr_osm_data['amenity']== priorities[3]].nsmallest(2, 'dist')
+    return airbnb_nbr
     
+def get_amenities(curr_airbnb_data):
 
-    amn_dfs = [curr_osm_prio1, curr_osm_prio2, curr_osm_prio3, curr_osm_prio4]   
+    dists = get_dist_to_shelter(combined_data, curr_airbnb_data)
+    combined_data['dist'] = dists
 
+    # https://stackoverflow.com/questions/52475458/how-to-sort-pandas-dataframe-with-a-key
+    curr_data = combined_data.sort_values(by=['amenity'], key=lambda x: x.apply(lambda y: priorities.index(y)))
+
+    curr_osm_prio1 = curr_data[curr_data['amenity'] == priorities[0]].nsmallest(6, 'dist')
+    curr_osm_prio2 = curr_data[curr_data['amenity'] == priorities[1]].nsmallest(5, 'dist')
+    curr_osm_prio3 = curr_data[curr_data['amenity'] == priorities[2]].nsmallest(4, 'dist')
+    curr_osm_prio4 = curr_data[curr_data['amenity'] == priorities[3]].nsmallest(3, 'dist')
+    curr_osm_prio5 = curr_data[curr_data['amenity'] == priorities[4]].nsmallest(2, 'dist')
+    
+    amn_dfs = [curr_osm_prio1, curr_osm_prio2, curr_osm_prio3, curr_osm_prio4, curr_osm_prio5]   
     all_top_amns = pd.concat(amn_dfs)
 
     return all_top_amns
-    
 
 # User must sort in what their priority is
 options = ['sustenance', 'transportation', 'parking', 'tourism', 'parks']
 
+prio1, options = input_prio(options)
+prio2, options = input_prio(options)
+prio3, options = input_prio(options)
+prio4, options = input_prio(options)
+prio5 = options[0]
 
-priorities = options.copy()
+priorities = [prio1, prio2, prio3, prio4, prio5]
 
-# prio1, options = input_prio(options)
-# prio2, options = input_prio(options)
-# prio3, options = input_prio(options)
-# prio4, options = input_prio(options)
-# prio5 = options[0]
-
-# priorities = prio1, prio2, prio3, prio4, prio5
-
-# nbr = input_nbr()
-nbr = 'Downtown Eastside'
+nbr = input_nbr()
 curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
-nbr_loc = curr_nbr_data
  
 top_airbnb_data = pd.DataFrame()
-
-top_airbnb_data = get_shelter_suggestions(nbr, airbnb_data, priorities)
-print(top_airbnb_data.iloc[0])
+top_airbnb_data = get_shelter_suggestions(nbr)
 
 top_osm_data = pd.DataFrame()
 
-
 for i in range (5):
-    curr_osm_data = get_amenities(osm_data, top_airbnb_data.iloc[i])
-    top_osm_data = top_osm_data.append(curr_osm_data,ignore_index=True)
-
-
+    curr_osm_data = get_amenities(top_airbnb_data.iloc[i])
+    top_osm_data = top_osm_data.append(curr_osm_data, ignore_index=True)
 
 top_airbnb_data.to_csv('top-airbnbs.csv')
 top_osm_data.to_csv('top-amenities.csv')
