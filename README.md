@@ -1,4 +1,4 @@
-# CMPT-353-Project-OSM-Photos-and-Tours
+# CMPT 353 Project OSM Photos and Tours
 
 - Simon Fraser University
 - CMPT 353 D100: Computational Data Science
@@ -15,7 +15,7 @@ Group name: 353
 - Gloria Yoon 
 - Kukjin Kim
 
-See [contributions](#contributions)
+See [contributions](#contributions).
 
 ## What The Project Does
 
