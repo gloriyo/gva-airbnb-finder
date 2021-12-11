@@ -65,21 +65,21 @@ def input_nbr():
     return pick
 
 
-def haversine(pts, shl_loc):
+def haversine(pts, airbnb_data):
     # radius of earth & haversine formula: 
     # https://en.wikipedia.org/wiki/Haversine_formula
 
     r = 6371000 # in meters
     # print(pts)
     # print('amenitites_lat: ', pts['lat'])
-    # print(shl_loc)
+    # print(airbnb_data)
     # print('airbnb_lat: ')
-    # print( shl_loc.iloc[0]['latitude'])
+    # print( airbnb_data.iloc[0]['latitude'])
 
 
-    lat_diff = np.radians(pts['lat']- shl_loc.iloc[0]['latitude'])
-    lon_diff = np.radians(pts['lon']- shl_loc.iloc[0]['longitude'])
-    lat1 = np.radians(shl_loc.iloc[0]['latitude'])
+    lat_diff = np.radians(pts['lat']- airbnb_data.iloc[0]['latitude'])
+    lon_diff = np.radians(pts['lon']- airbnb_data.iloc[0]['longitude'])
+    lat1 = np.radians(airbnb_data.iloc[0]['latitude'])
     lat2 = np.radians(pts['lat'])
 
     h_sin2_lat = np.square(np.sin(lat_diff/2))
@@ -89,10 +89,10 @@ def haversine(pts, shl_loc):
 
     return h_dist
 
-def get_dist_to_shelter(amn_data, shl_loc):
+def get_dist_to_shelter(amn_data, airbnb_data):
     # print('amn_data')
     # print (amn_data)
-    airbnb_dists = amn_data.apply(haversine, shl_loc=shl_loc, axis=1)
+    airbnb_dists = amn_data.apply(haversine, airbnb_data=airbnb_data, axis=1)
     print(airbnb_dists)
     return airbnb_dists
 
@@ -101,15 +101,13 @@ def get_shelter_suggestions(nbr, airbnb_data, priorities):
     # airbnb_data = airbnb_data[airbnb_data['neighbourhood'] == nbr]
     # airbnb_data = airbnb_data.head(n=2)
     # test data -- some neighbourhoods are not in the listing....
-    airbnb_data = airbnb_data[airbnb_data['neighbourhood_cleansed'] == 'Downtown Eastside']
+    airbnb_data = airbnb_data[airbnb_data['neighbourhood_cleansed'] == nbr]
     # airbnb_data = airbnb_data.head(n=1)
     airbnb_data = airbnb_data.sample(n=1)
 
-    shl_loc = airbnb_data
-    print('shl_loc')
-    print(shl_loc)
+    print(airbnb_data)
     curr_osm_data = osm_data
-    dists = get_dist_to_shelter(osm_data, shl_loc)
+    dists = get_dist_to_shelter(osm_data, airbnb_data)
     curr_osm_data['dist'] = dists
 
     print (dists)
@@ -118,7 +116,7 @@ def get_shelter_suggestions(nbr, airbnb_data, priorities):
     # https://stackoverflow.com/questions/52475458/how-to-sort-pandas-dataframe-with-a-key
     curr_osm_data = curr_osm_data.sort_values(by=['amenity'], key=lambda x: x.apply(lambda y: priorities.index(y)))
     # curr_osm_data.head(n=15)
-    curr_osm_prio1 = curr_osm_data[curr_osm_data['amenity']== priorities[0]].nsmallest(7, ['dist'])
+    curr_osm_prio1 = curr_osm_data[curr_osm_data['amenity']== priorities[0]].nsmallest(7, 'dist')
     curr_osm_prio2 = curr_osm_data[curr_osm_data['amenity']== priorities[1]].nsmallest(5, 'dist')
     curr_osm_prio3 = curr_osm_data[curr_osm_data['amenity']== priorities[2]].nsmallest(3, 'dist')
     curr_osm_prio4 = curr_osm_data[curr_osm_data['amenity']== priorities[3]].nsmallest(2, 'dist')
