@@ -12,10 +12,10 @@ def distance(first_hotel_lat1, first_hotel_lon1, lat2,lon2):
     return 12742 * asin(sqrt(a)) #2*R*asin...
 
 # Reference: https://www.youtube.com/watch?v=9biKWoGK3j0
-def main(top_airbnb_data, clean_amenities_data,):
+def main(top_airbnb_data, amenities_data):
     # Read data 
     top_airbnb = pd.read_csv(top_airbnb_data)  
-    amenity = pd.read_csv(clean_amenities_data)
+    amenity = pd.read_csv(amenities_data)
     neighbourhood_coord = pd.read_csv('neighbourhood-coords.csv', index_col = 'neighbourhood')
     
     # Create basemap (first recommendation hotel is middle)
@@ -55,10 +55,10 @@ def main(top_airbnb_data, clean_amenities_data,):
 
     for i, row in amenity.iterrows():
         distanceBtw.append(distance(first_hotel_lat, first_hotel_lon, amenity.at[i,'lat'], amenity.at[i,'lon']))
-    amenity['distnace'] = distanceBtw
+    amenity['dist'] = distanceBtw
     
     # close amenities within 3km from first hotel
-    closeAmenity = amenity.loc[amenity['distnace']<=3]
+    closeAmenity = amenity.loc[amenity['dist']<=3]
     
     
     # plot amenities 
@@ -87,19 +87,15 @@ def main(top_airbnb_data, clean_amenities_data,):
     m.add_child(mini_map)
     
     # add ledend of map 
-    image_file = 'legend.PNG'
+    image_file = 'legend.png'
     legend = FloatImage(image_file, bottom=2, left=2)
     m.add_child(legend)
     
     # make html file 
-    m.save('mapResult.html')
-    
-
+    m.save('result.html')
 
 if __name__=='__main__':
     top_airbnb_data = sys.argv[1]
-    clean_amenities_data = sys.argv[2]
-    
-    # top_airbnb_data = 'top-airbnb-data.csv'
-    # clean_amenities_data = 'clean-amenities.json'
-    main(top_airbnb_data, clean_amenities_data)
+    amenities_data = sys.argv[2]
+
+    main(top_airbnb_data, amenities_data)
