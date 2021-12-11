@@ -25,6 +25,8 @@ parks_data = parks_data[['Name', 'GoogleMapDest']]
 parks_data[['lat', 'lon']] = parks_data['GoogleMapDest'].str.split(',', 1, expand=True)
 parks_data = parks_data.drop('GoogleMapDest', axis=1)
 parks_data['amenity'] = 'park'
+parks_data['lat'] = parks_data['lat'].astype(np.float64)
+parks_data['lon'] = parks_data['lon'].astype(np.float64)
 
 # Combine parks and osm data to have list of amenities
 combined_data = pd.concat([osm_data, parks_data], ignore_index=True)
