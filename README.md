@@ -33,7 +33,7 @@ This project helps you find an ideal Airbnb for you in the Vancouver area. Given
 
 ## Data
 
-#### Provided
+### Provided
 
 - Provided data by instructor using OSM ([file](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/amenities-vancouver.json.gz) `amenities-vancouver.json.gz`)
 - Data collected online
@@ -43,7 +43,7 @@ This project helps you find an ideal Airbnb for you in the Vancouver area. Given
 
 See [references](#references).
 
-#### Generated
+### Generated
 
 - [File](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/top-airbnbs.csv) `top-airbnbs.csv`: the top 5 Airbnb listings recommended to the user
 - [File](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/top-amenities.csv) `top-amenities.csv`: the amenities around the Airbnb listings recommended to the user
