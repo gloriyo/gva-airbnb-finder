@@ -102,8 +102,8 @@ def get_shelter_suggestions(nbr, airbnb_data, priorities):
     # airbnb_data = airbnb_data.head(n=2)
     # test data -- some neighbourhoods are not in the listing....
     airbnb_data = airbnb_data[airbnb_data['neighbourhood_cleansed'] == 'Downtown Eastside']
-    airbnb_data = airbnb_data.head(n=1)
-    # airbnb_data.sample()
+    # airbnb_data = airbnb_data.head(n=1)
+    airbnb_data = airbnb_data.sample(n=1)
 
     shl_loc = airbnb_data
     print('shl_loc')
@@ -117,9 +117,19 @@ def get_shelter_suggestions(nbr, airbnb_data, priorities):
 
     # https://stackoverflow.com/questions/52475458/how-to-sort-pandas-dataframe-with-a-key
     curr_osm_data = curr_osm_data.sort_values(by=['amenity'], key=lambda x: x.apply(lambda y: priorities.index(y)))
-    curr_osm_data.head(n=15)
+    # curr_osm_data.head(n=15)
+    curr_osm_prio1 = curr_osm_data[curr_osm_data['amenity']== priorities[0]].nsmallest(7, ['dist'])
+    curr_osm_prio2 = curr_osm_data[curr_osm_data['amenity']== priorities[1]].nsmallest(5, 'dist')
+    curr_osm_prio3 = curr_osm_data[curr_osm_data['amenity']== priorities[2]].nsmallest(3, 'dist')
+    curr_osm_prio4 = curr_osm_data[curr_osm_data['amenity']== priorities[3]].nsmallest(2, 'dist')
+    
+    # curr_osm_data.head(n=15)
 
-    return airbnb_data, curr_osm_data
+    amn_dfs = [curr_osm_prio1, curr_osm_prio2, curr_osm_prio3, curr_osm_prio4]   
+
+    all_top_amns = pd.concat(amn_dfs)
+
+    return airbnb_data, all_top_amns
     
 
 # User must sort in what their priority is
