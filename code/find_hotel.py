@@ -8,7 +8,7 @@ from difflib import get_close_matches
 osm_data = pd.read_json('amenities-vancouver.json.gz', lines=True)
 airbnb_data = pd.read_csv('listings.csv')
 nbr_data = pd.read_csv('neighbourhood-coords.csv')
-
+parks_data = pd.read_csv('parks.csv', ';')
 
 # Data cleaning - osm
 osm_data = osm_data.drop('timestamp', axis=1)
@@ -19,6 +19,9 @@ osm_data = pd.concat([osm_data.drop(['tags'], axis=1), osm_data['tags'].apply(pd
 osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', osm_data['amenity'] == 'transportation', osm_data['amenity'] == 'parking']) | osm_data['tourism'].notna()]
 # osm_data.to_json('clean-amenities.json')
 
+parks_data = parks_data.drop(['ParkID', 'Official', 'Advisories', 'SpecialFeatures', 'Facilities', 'Washrooms', 'StreetNumber', 'StreetName', 'EWStreet', 'NSStreet', 'NeighbourhoodName', 'NeighbourhoodURL', 'Hectare'], axis=1)
+parks_data[['latitude', 'longitude']] = parks_data['GoogleMapDest'].str.split(',', 1, expand=True)
+parks_data = parks_data.drop('GoogleMapDest', axis=1)
 
 # # Data cleaning - neighbourhood
 # neighbourhood_data = neighbourhood_data.dropna()
