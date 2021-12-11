@@ -4,7 +4,6 @@
 - CMPT 353 D100: Computational Data Science
 - Instructor: Steven Bergner
 - Teaching Assistants: Arshdeep Singh Ahuja, Tiange Wan
-- CMPT-353-Project-OSM-Photos-and-Tours
 
 ## Authors
 
@@ -25,14 +24,14 @@ Group name: 353
 
 ## Libararies 
 
-1. numpy
-2. pandas
-3. sys
-4. difflib
-5. folium
-6. lxml
-7. pyspark
-8. math
+1. [NumPy](https://numpy.org/)
+2. [pandas](https://pandas.pydata.org/)
+3. [sys](https://docs.python.org/3/library/sys.html)
+4. [difflib](https://docs.python.org/3/library/difflib.html)
+5. [Folium](https://python-visualization.github.io/folium/)
+6. [lxml](https://lxml.de/)
+7. [PySpark](https://spark.apache.org/docs/latest/api/python/)
+8. [math](https://docs.python.org/3/library/math.html)
 
 ## Execution
 
@@ -40,7 +39,7 @@ Group name: 353
 
 ## Contribution 
 
-1. Jarell Santella: 
+1. Jarell Santella: read Vancouver data on Airbnb listings, parks, and OSM amenities data into Python, clean the data, and interpret the data. Gets user input on priorities to pass into algorithm which recommends them which Airbnb listing is best for them.
 2. Gloria Yoon: 
 3. Kukjin Kim: 
 
