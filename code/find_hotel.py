@@ -21,6 +21,7 @@ osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', o
 
 parks_data = parks_data.drop(['ParkID', 'Official', 'Advisories', 'SpecialFeatures', 'Facilities', 'Washrooms', 'StreetNumber', 'StreetName', 'EWStreet', 'NSStreet', 'NeighbourhoodName', 'NeighbourhoodURL', 'Hectare'], axis=1)
 parks_data[['latitude', 'longitude']] = parks_data['GoogleMapDest'].str.split(',', 1, expand=True)
+parks_data = parks_data.drop('GoogleMapDest', axis=1)
 
 # # Data cleaning - neighbourhood
 # neighbourhood_data = neighbourhood_data.dropna()
