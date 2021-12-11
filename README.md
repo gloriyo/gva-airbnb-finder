@@ -63,7 +63,7 @@ See [references](#references).
 
 1. Jarell Santella: read Vancouver data on Airbnb listings, parks, and OSM amenities data into Python, clean the data, and interpret the data. Gets user input on priorities to pass into algorithm which recommends them which Airbnb listing is best for them. Cleaning, debugging and refactoring code. Helping write README.md and report.
 2. Gloria Yoon: 
-3. Kukjin Kim: 
+3. Kukjin Kim: Read top 5 airbnb and amenities data paseed by the algorithm. Plot 5 airbnb with information and distance circle in OSM. Plot amenities with information within 3km from airbnb after claculation. Add legen and minimap in OSM. Make html file with OSM. Helping write README.md and report.
 
 ## References
 1. OSM data, already cleaned for Vancouver: https://coursys.sfu.ca/2021fa-cmpt-353-d1/pages/ProjectTourData/download
