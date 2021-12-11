@@ -145,7 +145,7 @@ priorities = options.copy()
 # prio4, options = input_prio(options)
 # prio5 = options[0]
 
-# priorities = prio1, prio2, prio3, prio4
+# priorities = prio1, prio2, prio3, prio4, prio5
 
 # nbr = input_nbr()
 nbr = 'Downtown Eastside'
