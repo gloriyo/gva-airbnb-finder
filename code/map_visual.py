@@ -16,7 +16,6 @@ def main(top_airbnb_data, amenities_data):
     # Read data 
     top_airbnb = pd.read_csv(top_airbnb_data)  
     amenity = pd.read_csv(amenities_data)
-    neighbourhood_coord = pd.read_csv('neighbourhood-coords.csv', index_col = 'neighbourhood')
     
     # Create basemap (first recommendation hotel is middle)
     baseLat = top_airbnb.at[0,'latitude']
