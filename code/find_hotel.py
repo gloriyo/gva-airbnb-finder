@@ -20,7 +20,7 @@ osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', o
 # osm_data.to_json('clean-amenities.json')
 
 # Data cleaning - airbnb
-airbnb_data = airbnb_data[['name', 'latitude', 'longitude', 'listing_url']]
+airbnb_data = airbnb_data[['name', 'latitude', 'longitude', 'listing_url', 'number_of_reviews_ltm', 'review_scores_rating']]
 
 # Data cleaning - parks
 parks_data = parks_data[['Name', 'GoogleMapDest']]
