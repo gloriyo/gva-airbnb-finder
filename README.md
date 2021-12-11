@@ -38,7 +38,7 @@ This project helps you find an ideal Airbnb for you in the Vancouver area. Given
 - Provided data by instructor using OSM ([file](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/amenities-vancouver.json.gz) `amenities-vancouver.json.gz`)
 - Data collected online
     1. Vancouver Airbnb rental listings and their coordinates ([file](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/listings.csv.gz) `listings.csv.gz`)
-    2. Vancouver neighbourhoods and their coordinates ([file]https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/neighbourhood-coords.csv `neighbourgood-coords.csv`)
+    2. Vancouver neighbourhoods and their coordinates ([file](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/neighbourhood-coords.csv) `neighbourgood-coords.csv`)
     3. Vancouver parks and their coordinates ([file](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/parks.csv) `parks.csv`)
 
 See [references](#references).
@@ -61,7 +61,7 @@ See [references](#references).
 
 ## Contributions
 
-1. Jarell Santella: read Vancouver data on Airbnb listings, parks, and OSM amenities data into Python, clean the data, and interpret the data. Gets user input on priorities to pass into algorithm which recommends them which Airbnb listing is best for them. Cleaning and refactoring code.
+1. Jarell Santella: read Vancouver data on Airbnb listings, parks, and OSM amenities data into Python, clean the data, and interpret the data. Gets user input on priorities to pass into algorithm which recommends them which Airbnb listing is best for them. Cleaning and refactoring code. Helping write README.md and report.
 2. Gloria Yoon: 
 3. Kukjin Kim: 
 
