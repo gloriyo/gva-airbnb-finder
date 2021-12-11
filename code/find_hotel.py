@@ -2,8 +2,6 @@ import numpy as np
 import pandas as pd
 from difflib import get_close_matches
 
-'''
-'''
 # Getting data into Python
 osm_data = pd.read_json('amenities-vancouver.json.gz', lines=True)
 airbnb_data = pd.read_csv('listings.csv.gz')
@@ -18,7 +16,6 @@ osm_data = osm_data.replace(['bicycle_parking', 'motorcycle_parking', 'parking',
 osm_data = pd.concat([osm_data.drop(['tags'], axis=1), osm_data['tags'].apply(pd.Series)], axis=1)
 osm_data = osm_data[np.logical_or.reduce([osm_data['amenity'] == 'sustenance', osm_data['amenity'] == 'transportation', osm_data['amenity'] == 'parking']) | osm_data['tourism'].notna()]
 osm_data.loc[np.logical_not(osm_data['amenity'].isin(['sustenance', 'transportation', 'parking'])), 'amenity'] = 'tourism'
-# osm_data.to_json('clean-amenities.json')
 
 # Data cleaning - airbnb
 airbnb_data = airbnb_data[['name', 'neighbourhood_cleansed','latitude', 'longitude', 'listing_url', 'number_of_reviews_ltm', 'review_scores_rating']]
@@ -27,14 +24,6 @@ airbnb_data = airbnb_data[['name', 'neighbourhood_cleansed','latitude', 'longitu
 parks_data = parks_data[['Name', 'GoogleMapDest']]
 parks_data[['latitude', 'longitude']] = parks_data['GoogleMapDest'].str.split(',', 1, expand=True)
 parks_data = parks_data.drop('GoogleMapDest', axis=1)
-
-# # Data cleaning - neighbourhood
-# neighbourhood_data = neighbourhood_data.dropna()
-# neighbourhood_data.to_csv('clean-neighbourhood.csv')
-
-# osm_data = pd.read_json('clean-amenities.json')
-# airbnb_data = pd.read_csv('listings.csv')
-# nbr_data = pd.read_csv('clean-neighbourhood.csv')
 
 nbr_options = nbr_data['neighbourhood'].to_numpy()
 
