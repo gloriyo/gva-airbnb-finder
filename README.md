@@ -1,9 +1,16 @@
-# CMPT 353 Project OSM Photos and Tours
+# Airbnb-Finder App based on CMPT 353 Project OSM Photos and Tours
 
 - Simon Fraser University
 - CMPT 353 D100: Computational Data Science
 - Instructor: Steven Bergner
 - Teaching Assistants: Arshdeep Singh Ahuja, Tiange Wan
+
+## Execution Steps to Run App Locally
+
+1. start back-end express.js server
+  * `cd server && npm start` 
+2. start front-end react
+  * `cd client && npm start` 
 
 ## Authors
 
