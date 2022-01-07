@@ -5,7 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css'
-import Home from "./components/Home";
+import Home from "./components/Home"; 
 import NotFound from "./components/NotFound";
 import ExpressTest from "./components/ExpressTest.jsx";
 import SearchListings from "./components/SearchListings.jsx";

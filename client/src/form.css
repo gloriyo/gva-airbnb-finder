@@ -1,11 +1,32 @@
+.centered {
+    text-align: -webkit-center;
+}
+
+.cnt-form {
+    /* justify-content: center */
+    text-align: -webkit-center;
+}
+
+.cnt-field {
+    padding: 1em 1em 1em;
+}
+
 form {
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    text-align: left;
+    /* justify-content: left; */
+    padding: 4%;
     width: 60%;
-    
+
     /* margin-left: 40%; */
 }
+
+label {
+    font-size: 16pt;
+    margin-right: 2em;
+}
+
 #searchListingsForm {
     background-color: antiquewhite;
   }

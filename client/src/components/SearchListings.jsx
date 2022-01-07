@@ -82,6 +82,7 @@ class SearchListings extends Home {
                         </div>
                         ))} */}
                         
+                    <div className='cnt-field'>
                         <label htmlFor="#"> Neighbourhood </label> 
                         <select> {/* to-do use neighbourhoodOptions */}
                             <option value="nb1">nb1</option>
@@ -89,6 +90,8 @@ class SearchListings extends Home {
                             <option defaultValue="nb3">nb3</option>
                             <option value="nb4">nb4</option>
                         </select>
+                    </div>
+
                     <button className="formSubmitButton">
                         Submit
                     </button>
