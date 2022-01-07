@@ -1,0 +1,9 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 40%;
+}
+.SearchListingsForm {
+    background-color: antiquewhite;
+  }

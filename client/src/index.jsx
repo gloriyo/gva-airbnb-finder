@@ -8,12 +8,14 @@ import 'bootstrap/dist/css/bootstrap.css'
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import ExpressTest from "./components/ExpressTest.jsx";
+import SearchListings from "./components/SearchListings.jsx";
 
 render(
   <BrowserRouter> 
     <Routes>
       <Route path="/" exact element={<App />}>
         <Route path="Home" exact element={<Home />} />
+        <Route path="SearchListings" element={<SearchListings />} />
         <Route path="Express-Test" element={<ExpressTest />} />
         <Route path="404" element={<NotFound />} />
         {/* <Navigate to="/404" /> */}
