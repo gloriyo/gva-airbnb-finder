@@ -1,4 +1,4 @@
-import { UB_URL } from '../config';
+import { DB_URL } from '../config';
 
 // to-do move to server side?
 

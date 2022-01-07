@@ -1,9 +1,11 @@
-.form {
+form {
     display: flex;
     flex-direction: column;
     justify-content: left;
-    margin-left: 40%;
+    width: 60%;
+    
+    /* margin-left: 40%; */
 }
-.SearchListingsForm {
+#searchListingsForm {
     background-color: antiquewhite;
   }

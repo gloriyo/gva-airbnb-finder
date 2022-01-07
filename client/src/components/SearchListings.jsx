@@ -9,6 +9,7 @@ class SearchListings extends Home {
     constructor(props){
         super(props);
         this.state = {
+            neighbourhoodOptions : [],
             inputs: {
                 Neighbourhood: '',
                 AmenityPriorityByType: [],
@@ -21,22 +22,22 @@ class SearchListings extends Home {
     }
 
     // Fetch the list on first mount
-    // componentDidMount() {
-    //     this.getList();
-    // }
+    componentDidMount() {
+        this.getNeighbourhoods();
+    }
     
-    // // Retrieves the list of items from the Express app
-    // getList = () => {
-    //     fetch('/api/list', {
-    //         headers : { 
-    //           'Content-Type': 'application/json',
-    //           'Accept': 'application/json'
-    //         }
-    //     })
-    //     .then(res => res.json())
-    //     .then(list => this.setState({ list }))
-    //     console.log('calling express api')
-    // }
+    // Retrieves the list from the Express app
+    getNeighbourhoods = () => {
+        fetch('/api/getNeighbourhoods', {
+            headers : { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(neighbourhoodOptions => this.setState({ neighbourhoodOptions }))
+        console.log('calling express api')
+    }
     renderMaxLength (keyName) {
         let maxStringLength = '50';
         return maxStringLength;
@@ -48,15 +49,24 @@ class SearchListings extends Home {
         }
     }
 
+    handleSubmit = async e => {
+        e.preventDefault();
+        console.log("submitting form")
+        alert('submit form')
+        // to-do call /api/getListings
+    }
+    
 
     render() { 
         // const { inputs } = this.state;
         const { Neighbourhood, AmenityPriorityByType, AmenitiesByName } = this.state.inputs;
+        const Neighbourhoods = this.state.neighbourhoodOptions
         return (
             <Fragment>
-                <form onSubmit='/api/getListings' id='searchListingsForm'>
+                <div className='cnt-form'>
+                <form onSubmit={this.handleSubmit} id='searchListingsForm'>
                     <h1>Enter Some Details...</h1>
-                        {Object.keys(input).map((keyName, i) => (
+                        {/* {Object.keys(inputs).map((keyName, i) => (
                         <div key="inputDiv_{{i}}" className='inputDiv'>
                             <label>{keyName}</label>
                             {this.renderError(keyName)}
@@ -64,41 +74,27 @@ class SearchListings extends Home {
                                 className='serachInputs'
                                 name={keyName}
                                 type='text'
-                                value={input[keyName]}
+                                value={inputs[keyName]}
                                 onChange='#'
                                 maxLength={this.maxAmenitiesLength}
                             >
                             </textarea>
                         </div>
-                        ))
-                    }
+                        ))} */}
+                        
+                        <label htmlFor="#"> Neighbourhood </label> 
+                        <select> {/* to-do use neighbourhoodOptions */}
+                            <option value="nb1">nb1</option>
+                            <option value="nb2">nb2</option>
+                            <option defaultValue="nb3">nb3</option>
+                            <option value="nb4">nb4</option>
+                        </select>
                     <button className="formSubmitButton">
                         Submit
                     </button>
                 </form>
-
-                <div class="page-header pb-2 mt-4 mb-2 border-bottom">
-                    <h1>Message from Backend Server (express)</h1>
-                    <h1>List of Items</h1>
-                    {/* Check to see if any items are found*/}
-                    {list.length ? (
-                    <div>
-                        {/* Render the list of items */}
-                        {list.map((item) => {
-                        return(
-                            <div>
-                            {item}
-                            </div>
-                        );
-                        })}
-                    </div>
-                    ) : (
-                    <div>
-                        <h2>No List Items Found</h2>
-                    </div>
-                    )
-                }
                 </div>
+
             </Fragment>
         );
     }
