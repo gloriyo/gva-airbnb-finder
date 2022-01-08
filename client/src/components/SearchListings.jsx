@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import '../form.css';
-
+// import 'bootstrap/dist/css/bootstrap.css'
+import { Button, Form } from 'react-bootstrap'
 import Home from './Home'
 
 class SearchListings extends Home {
@@ -64,27 +65,12 @@ class SearchListings extends Home {
         return (
             <Fragment>
                 <div className='cnt-form'>
-                <form onSubmit={this.handleSubmit} id='searchListingsForm'>
+                {/* <form onSubmit={this.handleSubmit} id='searchListingsForm'>
                     <h1>Enter Some Details...</h1>
-                        {/* {Object.keys(inputs).map((keyName, i) => (
-                        <div key="inputDiv_{{i}}" className='inputDiv'>
-                            <label>{keyName}</label>
-                            {this.renderError(keyName)}
-                            <textarea
-                                className='serachInputs'
-                                name={keyName}
-                                type='text'
-                                value={inputs[keyName]}
-                                onChange='#'
-                                maxLength={this.maxAmenitiesLength}
-                            >
-                            </textarea>
-                        </div>
-                        ))} */}
                         
-                    <div className='cnt-field'>
-                        <label htmlFor="#"> Neighbourhood </label> 
-                        <select> {/* to-do use neighbourhoodOptions */}
+                    <div className='form-group cnt-field'>
+                        <label htmlFor="inputEmail"> Neighbourhood </label> 
+                        <select> /* to-do use neighbourhoodOptions *
                             <option value="nb1">nb1</option>
                             <option value="nb2">nb2</option>
                             <option defaultValue="nb3">nb3</option>
@@ -95,7 +81,45 @@ class SearchListings extends Home {
                     <button className="formSubmitButton">
                         Submit
                     </button>
-                </form>
+                </form> */}
+
+                <Form >
+                    <h1 className="form-title">Find your Airbnb!</h1>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Neighbourhood</Form.Label>
+                        <Form.Select>
+                            <option>Neighbourhood 1</option>
+                            <option>Neighbourhood 2</option>
+                            <option>Neighbourhood 3</option>
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Preferred Amenities</Form.Label>
+                        <Form.Check type="checkbox" label="amn1" />
+                        <Form.Check type="checkbox" label="amn2" />
+                        <Form.Check type="checkbox" label="amn3" />
+                    </Form.Group>
+                    <Button variant="light" className="submitButton" type="submit">Submit</Button>
+                </Form>
+
+                {/* <ButtonGroup>
+                    {radios.map((radio, idx) => (
+                    <ToggleButton
+                        key={idx}
+                        id={`radio-${idx}`}
+                        type="radio"
+                        variant={idx % 2 ? 'outline-success' : 'outline-danger'}
+                        name="radio"
+                        value={radio.value}
+                        checked={radioValue === radio.value}
+                        onChange={(e) => setRadioValue(e.currentTarget.value)}
+                    >
+                        {radio.name}
+                    </ToggleButton>
+                    ))}
+                </ButtonGroup> */}
+
+
                 </div>
 
             </Fragment>
