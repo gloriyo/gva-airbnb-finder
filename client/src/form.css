@@ -50,6 +50,11 @@ label.form-check-label {
     font-size: 1.2em;
 }
 
+.mb-3 {
+    margin-bottom: 1rem !important;
+    margin: 1em 0.7em;
+}
+
 .navbar-brand {
     font-size: 2em;
 
@@ -64,4 +69,5 @@ label.form-check-label {
     border-width: thin;
     border-style: solid;
     border-color: lightgray;
+    margin: 1em 0;
 }
