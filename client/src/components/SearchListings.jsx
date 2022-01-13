@@ -20,6 +20,7 @@ class SearchListings extends Home {
                 amenitiesByName: [],
             },
             maxAmenitiesLength: 50,
+            contentLoaded: false,
             errors: {}
         }
         
@@ -37,8 +38,9 @@ class SearchListings extends Home {
         
         try {
             const { data } = await getNeighbourhoods();
-            this.setState({ neighbourhoodOptions: data });
+            this.setState({ neighbourhoodOptions: data, contentLoaded: true });
             console.log(data)
+            // contentLoaded = true
         } catch (error) {
             console.log(error.message);
         }
@@ -88,16 +90,24 @@ class SearchListings extends Home {
 
     render() { 
         // const { inputs } = this.state;
-        const { Neighbourhood, AmenityPriorityByType, AmenitiesByName } = this.state.inputs;
-        const Neighbourhoods = this.state.neighbourhoodOptions
+        const { neighbourhood, amenityPriorityByType, amenitiesByName } = this.state.inputs;
+        const neighbourhoods = this.state.neighbourhoodOptions
+
+        // to-do: make sure content is loaded first
+        if (this.state.contentLoaded === false) {
+            console.log(neighbourhoods)
+            return null;
+        }
+        console.log(neighbourhoods)
         return (
+            
             <Fragment>
                 <div className='cnt-form'>
                 {/* <form onSubmit={this.handleSubmit} id='searchListingsForm'>
                     <h1>Enter Some Details...</h1>
                         
                     <div className='form-group cnt-field'>
-                        <label htmlFor="inputEmail"> Neighbourhood </label> 
+                        <label htmlFor="inputEmail"> neighbourhood </label> 
                         <select> /* to-do use neighbourhoodOptions *
                             <option value="nb1">nb1</option>
                             <option value="nb2">nb2</option>
@@ -115,10 +125,17 @@ class SearchListings extends Home {
                     <h1 className="form-title">Find your Airbnb!</h1>
                     <Form.Group className="mb-3">
                         <Form.Label>Neighbourhood</Form.Label>
+
+
+
                         <Form.Select name="neighbourhood" onChange={this.handleChange}>
-                            <option>Neighbourhood 1</option>
+
+                            {neighbourhoods.map((nb, i) => (
+                                <option key={i} value={nb}>{nb}</option>
+                            ))}
+                            {/* <option>Neighbourhood 1</option>
                             <option>Neighbourhood 2</option>
-                            <option>Neighbourhood 3</option>
+                            <option>Neighbourhood 3</option> */}
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3">
