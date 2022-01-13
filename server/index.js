@@ -1,18 +1,18 @@
-const express = require('express')
+// const express = require('express')
+
+
+// import router from './routes/main.js';
+import express from 'express';
+import path from 'path';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
 const app = express();
-const path = require("path");
+// const path = require("path");
 const port = process.env.PORT || 8000;
-const fs = require("fs");
-const bodyParser = require("body-parser");
-var http = require('http');
-
-
-  
-// import express from 'express';
-// import path from 'path';
-// import bodyParser from 'body-parser';
-
-// const port = process.env.PORT || 8000;
+// const fs = require("fs");
+// const bodyParser = require("body-parser");
+// var http = require('http');
 
 // TO-USE REFERENCE: https://github.com/myogeshchavan97/express-static-serve/tree/master/react-app
 
@@ -29,11 +29,18 @@ var http = require('http');
 // app.use(express.static(path.join(__dirname, 'client/build')));
 // app.use(express.static(path.join(__dirname, ".." ,'build')));
 
-app.use(bodyParser.json());
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(bodyParser.json({ limit: '10mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
+app.use(cors());
 
+// app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-// app.use(express.static("public"));
+app.get('/api/getNeighbourhoods', (req, res) => {
+    //to-do: get real neighbourhood list from csv
+    var list = ["NB1 from Server", "NB2 from Server", "NB3 from Server"];
+    res.json(list);
+    console.log(list);
+});
 
 app.get('/api/list', (req, res) => {
     var list = ["Hello", "from", "server"];
@@ -46,9 +53,9 @@ app.get("/api", (req, res) => {
 	res.json({ message: "Hello from server!" });
 });
 
-app.get('*', (req, res) => {
-	res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+// 	res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+// });
 
 // app.use((req, res, next) => {
 //     res.sendFile(path.join(__dirname, "..", "build", "index.html"));

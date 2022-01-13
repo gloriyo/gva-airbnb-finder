@@ -4,6 +4,9 @@ import '../form.css';
 import { Button, Form } from 'react-bootstrap'
 import Home from './Home'
 
+import { getNeighbourhoods, postSearchInputs } from '../services/apiServices';
+
+
 class SearchListings extends Home {
 
 
@@ -12,9 +15,9 @@ class SearchListings extends Home {
         this.state = {
             neighbourhoodOptions : [],
             inputs: {
-                Neighbourhood: '',
-                AmenityPriorityByType: [],
-                AmenitiesByName: [],
+                neighbourhood: '',
+                amenityPriorityByType: [],
+                amenitiesByName: [],
             },
             maxAmenitiesLength: 50,
             errors: {}
@@ -22,22 +25,32 @@ class SearchListings extends Home {
         
     }
 
+    // TO-DO
     // Fetch the list on first mount
     componentDidMount() {
         this.getNeighbourhoods();
     }
     
     // Retrieves the list from the Express app
-    getNeighbourhoods = () => {
-        fetch('/api/getNeighbourhoods', {
-            headers : { 
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(neighbourhoodOptions => this.setState({ neighbourhoodOptions }))
+    getNeighbourhoods = async () => {
         console.log('calling express api')
+        
+        try {
+            const { data } = await getNeighbourhoods();
+            this.setState({ neighbourhoodOptions: data });
+            console.log(data)
+        } catch (error) {
+            console.log(error.message);
+        }
+        // fetch('/api/getNeighbourhoods', {
+        //     headers : { 
+        //       'Content-Type': 'application/json',
+        //       'Accept': 'application/json'
+        //     }
+        // })
+        // .then(res => res.json())
+        // .then(neighbourhoodOptions => this.setState({ neighbourhoodOptions: neighbourhoodOptions }))
+
     }
     renderMaxLength (keyName) {
         let maxStringLength = '50';
@@ -50,10 +63,25 @@ class SearchListings extends Home {
         }
     }
 
+    handleChange = e => {
+        const inputs = {...this.state.inputs};
+        inputs[e.currentTarget.name] = e.currentTarget.value;
+        this.setState({ inputs });
+        console.log(inputs);
+    }
+
     handleSubmit = async e => {
         e.preventDefault();
-        console.log("submitting form")
-        alert('submit form')
+        console.log("submitting form");
+        alert('submitting form');
+
+        try {
+            const { data } = await postSearchInputs({...this.state.inputs});
+ 
+        } catch (error) {
+            console.log(error.message);
+        }
+        
         // to-do call /api/getListings
     }
     
@@ -83,11 +111,11 @@ class SearchListings extends Home {
                     </button>
                 </form> */}
 
-                <Form >
+                <Form onSubmit={this.handleSubmit} >
                     <h1 className="form-title">Find your Airbnb!</h1>
                     <Form.Group className="mb-3">
                         <Form.Label>Neighbourhood</Form.Label>
-                        <Form.Select>
+                        <Form.Select name="neighbourhood" onChange={this.handleChange}>
                             <option>Neighbourhood 1</option>
                             <option>Neighbourhood 2</option>
                             <option>Neighbourhood 3</option>
@@ -95,9 +123,9 @@ class SearchListings extends Home {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Preferred Amenities</Form.Label>
-                        <Form.Check type="checkbox" label="amn1" />
-                        <Form.Check type="checkbox" label="amn2" />
-                        <Form.Check type="checkbox" label="amn3" />
+                        <Form.Check name="amenityPriorityByType" onChange={this.handleChange} type="checkbox" label="amn1" />
+                        <Form.Check name="amenityPriorityByType" onChange={this.handleChange} type="checkbox" label="amn2" />
+                        <Form.Check name="amenityPriorityByType" onChange={this.handleChange} type="checkbox" label="amn3" />
                     </Form.Group>
                     <Button variant="light" className="submitButton" type="submit">Submit</Button>
                 </Form>

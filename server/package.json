@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "- Simon Fraser University\r - CMPT 353 D100: Computational Data Science\r - Instructor: Steven Bergner\r - Teaching Assistants: Arshdeep Singh Ahuja, Tiange Wan",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js"
   },
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/gloriyo/gva-airbnb-finder#readme",
   "dependencies": {
     "axios": "^0.24.0",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "nodemon": "^2.0.15"

@@ -1,8 +1,9 @@
 
 // routes currently not in use
 
-module.exports=function(app){
-    app.get('/',function(req,res){
-       res.render('index');
-    });
-  }
+import express from 'express';
+
+const router = express.Router();
+
+
+export default router;
