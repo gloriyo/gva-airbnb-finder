@@ -67,7 +67,21 @@ class SearchListings extends Home {
 
     handleChange = e => {
         const inputs = {...this.state.inputs};
-        inputs[e.currentTarget.name] = e.currentTarget.value;
+
+        console.log(e.currentTarget.name)
+        if (e.currentTarget.name === "amenityPriorityByType") {
+            if (inputs[e.currentTarget.name].includes(e.currentTarget.value) === false) {
+                console.log(inputs[e.currentTarget.name])
+                inputs[e.currentTarget.name].push(e.currentTarget.value)
+            } else {
+                console.log(inputs[e.currentTarget.name])
+                inputs[e.currentTarget.name].pop(e.currentTarget.value)                
+            }
+        } else {
+            inputs[e.currentTarget.name] = e.currentTarget.value;
+        } 
+
+        
         this.setState({ inputs });
         console.log(inputs);
     }
@@ -140,9 +154,9 @@ class SearchListings extends Home {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Preferred Amenities</Form.Label>
-                        <Form.Check name="amenityPriorityByType" onChange={this.handleChange} type="checkbox" label="amn1" />
-                        <Form.Check name="amenityPriorityByType" onChange={this.handleChange} type="checkbox" label="amn2" />
-                        <Form.Check name="amenityPriorityByType" onChange={this.handleChange} type="checkbox" label="amn3" />
+                        <Form.Check name="amenityPriorityByType" value="amn1" onChange={this.handleChange} type="checkbox" label="amn1" />
+                        <Form.Check name="amenityPriorityByType" value="amn2" onChange={this.handleChange} type="checkbox" label="amn2" />
+                        <Form.Check name="amenityPriorityByType" value="amn3" onChange={this.handleChange} type="checkbox" label="amn3" />
                     </Form.Group>
                     <Button variant="light" className="submitButton" type="submit">Submit</Button>
                 </Form>
