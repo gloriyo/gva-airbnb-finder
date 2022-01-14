@@ -65,6 +65,7 @@ class SearchListings extends Home {
         }
     }
 
+    // to-do: set priority
     handleChange = e => {
         const inputs = {...this.state.inputs};
 

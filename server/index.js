@@ -42,6 +42,11 @@ app.get('/api/getNeighbourhoods', (req, res) => {
     console.log(list);
 });
 
+app.post('/api/search', (req, res) => {
+    //to-do: process with find_hotel
+    console.log(req.body)
+});
+
 app.get('/api/list', (req, res) => {
     var list = ["Hello", "from", "server"];
     res.json(list);
