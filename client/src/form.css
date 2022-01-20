@@ -1,0 +1,73 @@
+a.nav-link {
+    font-size: 1.5em;
+    margin: 0 0.3em;
+}
+
+a.navbar-brand {
+    padding-bottom: 0.3em;
+    margin-right: 1em;
+
+}
+
+.centered {
+    text-align: -webkit-center;
+}
+
+.cnt-form {
+    /* justify-content: center */
+    text-align: -webkit-center;
+    margin: 3em 0;
+}
+
+.cnt-field {
+    padding: 1em 1em 1em;
+}
+
+.form-title {
+    margin: 0.5em 0 1em;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    /* justify-content: left; */
+    padding: 4% 6%;
+    width: 60%;
+    border-style: solid;
+    border-radius: 1rem !important;
+
+    border-width: medium;
+
+    /* margin-left: 40%; */
+}
+
+label {
+    font-size: 16pt;
+    margin-right: 2em;
+}
+
+label.form-check-label {
+    font-size: 1.2em;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+    margin: 1em 0.7em;
+}
+
+.navbar-brand {
+    font-size: 2em;
+
+}
+
+#searchListingsForm {
+    background-color: antiquewhite;
+}
+
+.submitButton {
+    width: 20%;
+    border-width: thin;
+    border-style: solid;
+    border-color: lightgray;
+    margin: 1em 0;
+}
