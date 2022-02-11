@@ -33,9 +33,14 @@ osm_data.to_csv('clean-osm.csv')
 airbnb_data.to_csv('clean-airbnb-listings.csv')
 parks_data.to_csv('clean-parks.csv')
 
+# Data to json
+nbr_data.to_json('clean-nbr-coords.json')
+
 # Combine parks and osm data to have list of amenities
 combined_data = pd.concat([osm_data, parks_data], ignore_index=True)
 
 # Combined data to csv
 # Data to csv
 combined_data.to_csv('clean-combined.csv')
+
+

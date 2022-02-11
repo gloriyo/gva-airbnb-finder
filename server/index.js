@@ -6,6 +6,7 @@ import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import fs from 'fs';
 
 const app = express();
 // const path = require("path");
@@ -14,32 +15,28 @@ const port = process.env.PORT || 8000;
 // const bodyParser = require("body-parser");
 // var http = require('http');
 
-// TO-USE REFERENCE: https://github.com/myogeshchavan97/express-static-serve/tree/master/react-app
-
-// or use https://github.com/reactjs/express-react-views for server-side rendering only...
-
-
-// app.db // to-do
-// app.set('views', __dirname + '/views');
-// app.set('root', __dirname)
-// app.use(express.logger('dev'));
-// app.use(express.static(__dirname + '/public'));
-
-
-// app.use(express.static(path.join(__dirname, 'client/build')));
-// app.use(express.static(path.join(__dirname, ".." ,'build')));
-
 app.use(bodyParser.json({ limit: '10mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 app.use(cors());
+
+
+
 
 // app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.get('/api/getNeighbourhoods', (req, res) => {
     //to-do: get real neighbourhood list from csv
-    var list = ["NB1 from Server", "NB2 from Server", "NB3 from Server"];
-    res.json(list);
-    console.log(list);
+    // const neighbourhoodOptions = require('./assets/data_files/clean-nbr-coords.json');
+    // var list = ["NB1 from Server", "NB2 from Server", "NB3 from Server"];
+    // res.json(list);
+    // console.log(list);
+    fs.readFile('./assets/data_files/clean-nbr-coords.json', function (error, content) {
+        data = JSON.parse(content);
+        var neighbourhoodOptions = data.neighbourhood
+        res.json(neighbourhoodOptions);
+        console.log(neighbourhoodOptions);
+    });
+
 });
 
 app.post('/api/search', (req, res) => {

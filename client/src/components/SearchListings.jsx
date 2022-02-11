@@ -13,7 +13,7 @@ class SearchListings extends Home {
     constructor(props){
         super(props);
         this.state = {
-            neighbourhoodOptions : [],
+            neighbourhoodOptions : {},
             inputs: {
                 neighbourhood: '',
                 amenityPriorityByType: [],
@@ -38,7 +38,7 @@ class SearchListings extends Home {
         
         try {
             const { data } = await getNeighbourhoods();
-            this.setState({ neighbourhoodOptions: data, contentLoaded: true });
+            this.setState({ neighbourhoodOptions: data.neighbourhood, contentLoaded: true });
             console.log(data)
             // contentLoaded = true
         } catch (error) {
