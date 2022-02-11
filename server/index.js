@@ -31,7 +31,7 @@ app.get('/api/getNeighbourhoods', (req, res) => {
     // res.json(list);
     // console.log(list);
     fs.readFile('./assets/data_files/clean-nbr-coords.json', function (error, content) {
-        data = JSON.parse(content);
+        var data = JSON.parse(content);
         var neighbourhoodOptions = data.neighbourhood
         res.json(neighbourhoodOptions);
         console.log(neighbourhoodOptions);

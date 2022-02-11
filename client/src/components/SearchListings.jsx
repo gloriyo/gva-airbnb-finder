@@ -38,7 +38,7 @@ class SearchListings extends Home {
         
         try {
             const { data } = await getNeighbourhoods();
-            this.setState({ neighbourhoodOptions: data.neighbourhood, contentLoaded: true });
+            this.setState({ neighbourhoodOptions: data, contentLoaded: true });
             console.log(data)
             // contentLoaded = true
         } catch (error) {
@@ -144,8 +144,7 @@ class SearchListings extends Home {
 
 
                         <Form.Select name="neighbourhood" onChange={this.handleChange}>
-
-                            {neighbourhoods.map((nb, i) => (
+                            {Object.values(neighbourhoods).map((nb, i) => (
                                 <option key={i} value={nb}>{nb}</option>
                             ))}
                             {/* <option>Neighbourhood 1</option>
