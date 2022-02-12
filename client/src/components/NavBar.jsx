@@ -10,7 +10,7 @@ class NavBar extends Component {
                     <Navbar.Brand href="/">Welcome</Navbar.Brand>
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/Home">Home</Nav.Link>
+                            <Nav.Link href="/SearchListings">Search</Nav.Link>
                             <Nav.Link href="#">Feature 1</Nav.Link>
                             <Nav.Link href="#">Feature 2</Nav.Link>
                         </Nav>
