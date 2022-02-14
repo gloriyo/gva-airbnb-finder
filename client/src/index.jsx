@@ -14,7 +14,8 @@ render(
   <BrowserRouter> 
     <Routes>
       <Route path="/" exact element={<App />}>
-        <Route path="Home" exact element={<Home />} />
+        <Route path="/" exact element={<SearchListings />} />
+        {/* <Route path="Home" exact element={<Home />} /> */}
         <Route path="SearchListings" element={<SearchListings />} />
         <Route path="Express-Test" element={<ExpressTest />} />
         <Route path="404" element={<NotFound />} />
