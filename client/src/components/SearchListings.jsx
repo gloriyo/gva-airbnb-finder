@@ -13,7 +13,7 @@ class SearchListings extends Home {
     constructor(props){
         super(props);
         this.state = {
-            neighbourhoodOptions : [],
+            neighbourhoodOptions : {},
             inputs: {
                 neighbourhood: '',
                 amenityPriorityByType: [],
@@ -144,8 +144,7 @@ class SearchListings extends Home {
 
 
                         <Form.Select name="neighbourhood" onChange={this.handleChange}>
-
-                            {neighbourhoods.map((nb, i) => (
+                            {Object.values(neighbourhoods).map((nb, i) => (
                                 <option key={i} value={nb}>{nb}</option>
                             ))}
                             {/* <option>Neighbourhood 1</option>
