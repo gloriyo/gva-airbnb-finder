@@ -123,16 +123,13 @@ def get_shelters_by_amenities(airbnb_nbr, amenities, range):
 
 
 # return list of airbnbs (1) based on amenity distances and (2) based on scores 
-def get_shelter_suggestions(nbr, amenity_types):
-
-
-    # curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
+def get_shelter_suggestions(nbr, amenity_types, range = 500):
 
     # filter listings by neighbourhood
     airbnb_nbr = airbnb_data[airbnb_data['neighbourhood_cleansed'] == nbr]
 
 
-    range = 500 # find amenities within 500 meters
+    # range = 500 # find amenities within 500 meters
 
     # filter listings by required (prioritized) amenities 
     airbnb_nbr_amn, amn_inRange = get_shelters_by_amenities(airbnb_nbr, amenity_types, range)
@@ -172,17 +169,6 @@ def get_shelter_suggestions(nbr, amenity_types):
 
 if __name__ == '__main__':
 
-    # # User must sort in what their priority is
-    # #options = ['sustenance', 'transportation', 'parking', 'tourism', 'parks']
-    # options = np.unique(amn_data['amenity'])
-
-    # prio1, options = input_prio(options)
-    # prio2, options = input_prio(options)
-    # prio3, options = input_prio(options)
-    # # prio4, options = input_prio(options)
-    # # prio5 = options[0]
-
-    # priorities = [prio1, prio2, prio3]
 
     chosen_nbr = sys.argv[1]
     chosen_amns = sys.argv[2]
@@ -196,7 +182,6 @@ if __name__ == '__main__':
     # get shelters within close range to specified amenities
 
 
-    
     top_airbnb_data = pd.DataFrame()
     top_airbnb_data = get_shelter_suggestions(chosen_nbr, chosen_amns)
 
