@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from difflib import get_close_matches
+import sys
 
 # Getting data into Python
 # osm_data = pd.read_csv('./../data_files/clean-osm.csv')
@@ -89,14 +90,13 @@ def get_dist_to_shelter(amn_data, airbnb_data):
     
     return airbnb_dists
 
-def get_shelters_by_amenities(airbnb_nbr, priorities, range):
+def get_shelters_by_amenities(airbnb_nbr, amenities, range):
 
     numOfListings = airbnb_nbr.shape[0]
     rangeList = list(range(1, numOfListings))
     strRangeList = map(str, rangeList) 
 
     dist_df = pd.DataFrame()
-    # dist_df[strRangeList]
     amn_inRange = pd.DataFrame()
 
     # for each listing in airbnb_nbr, see if it is in range of required amenities
@@ -123,7 +123,7 @@ def get_shelters_by_amenities(airbnb_nbr, priorities, range):
 
 
 # return list of airbnbs (1) based on amenity distances and (2) based on scores 
-def get_shelter_suggestions(nbr, priorities):
+def get_shelter_suggestions(nbr, amenity_types):
 
 
     # curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
@@ -135,10 +135,10 @@ def get_shelter_suggestions(nbr, priorities):
     range = 500 # find amenities within 500 meters
 
     # filter listings by required (prioritized) amenities 
-    airbnb_nbr_amn, amn_inRange = get_shelters_by_amenities(airbnb_nbr, priorities, range)
+    airbnb_nbr_amn, amn_inRange = get_shelters_by_amenities(airbnb_nbr, amenity_types, range)
 
-    # top 10 listings based on amn_score
-    airbnb_amn_scored = airbnb_nbr_amn.nlargest(10, 'amn_score')
+    # # top 10 listings based on amn_score
+    # airbnb_amn_scored = airbnb_nbr_amn.nlargest(10, 'amn_score')
     
     # combine amn_score with ratings for listings
     airbnb_nbr_amn['combined_score'] = amn_data['review_scores_rating', 'amn_score'].sum(axis=1)
@@ -170,7 +170,7 @@ def get_shelter_suggestions(nbr, priorities):
 
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
 
     # # User must sort in what their priority is
     # #options = ['sustenance', 'transportation', 'parking', 'tourism', 'parks']
@@ -184,24 +184,28 @@ def get_shelter_suggestions(nbr, priorities):
 
     # priorities = [prio1, prio2, prio3]
 
-    # nbr_options = nbr_data['neighbourhood'].to_numpy()
+    chosen_nbr = sys.argv[1]
+    chosen_amns = sys.argv[2]
+
+
+    nbr_options = nbr_data['neighbourhood'].to_numpy()
 
     # nbr = input_nbr()
-    # curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == nbr]
+    curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == chosen_nbr]
 
     # get shelters within close range to specified amenities
 
 
     
-    # top_airbnb_data = pd.DataFrame()
-    # top_airbnb_data = get_shelter_suggestions(nbr, priorities)
+    top_airbnb_data = pd.DataFrame()
+    top_airbnb_data = get_shelter_suggestions(chosen_nbr, chosen_amns)
 
-    # top_osm_data = pd.DataFrame()
+    top_osm_data = pd.DataFrame()
 
-    # for i in range (5):
-    #     curr_osm_data = get_amenities(top_airbnb_data.iloc[i])
-    #     top_osm_data = top_osm_data.append(curr_osm_data, ignore_index=True)
+    for i in range (5):
+        curr_osm_data = get_amenities(top_airbnb_data.iloc[i])
+        top_osm_data = top_osm_data.append(curr_osm_data, ignore_index=True)
 
-    # top_airbnb_data.to_csv('top-airbnbs.csv')
-    # top_osm_data.to_csv('top-amenities.csv')
+    top_airbnb_data.to_csv('top-airbnbs.csv')
+    top_osm_data.to_csv('top-amenities.csv')
     
