@@ -69,6 +69,22 @@ def get_shelter_suggestions(nbr, amenity_types, range = 500):
     return airbnb_rated, amn_inRange
     
 
+def get_desired_amenities(amn_in_range_data, amn_data, range=500):
+    chosen_amn_data = amn_data[amn_data['amenity'].isin(chosen_amns)]
+    chosen_amn_data = chosen_amn_data.rename(columns={'Unnamed: 0': 'id'})
+    nbr_amn_data = amn_in_range_data[amn_in_range_data['neighbourhood'] == chosen_nbr]
+
+    nbr_amn_ids = nbr_amn_data.columns[(nbr_amn_data.notna()).iloc[0]].tolist()
+
+    nbr_amn_ids = nbr_amn_ids[2:]
+
+    nbr_amn_ids = [int(i) for i in nbr_amn_ids]
+
+    chosen_amn_data = chosen_amn_data[chosen_amn_data['id'].isin(nbr_amn_ids)]
+
+
+    return chosen_amn_data
+
 
 if __name__ == '__main__':
 
@@ -78,20 +94,21 @@ if __name__ == '__main__':
 
     chosen_nbr = "Sunset"
     chosen_amns = ['sustenance', 'transportation']
-    
-
-
-    nbr_options = nbr_data['neighbourhood'].to_numpy()
 
     # nbr = input_nbr()
     curr_nbr_data = nbr_data[nbr_data['neighbourhood'] == chosen_nbr]
 
+    # filter listings by neighbourhood
+    airbnb_nbr = airbnb_data[airbnb_data['neighbourhood_cleansed'] == chosen_nbr]
+
+
     # get shelters within close range to specified amenities
+    chosen_amn_data = get_desired_amenities(amn_in_range_data, amn_data)
+
+    display(chosen_amn_data)
 
 
-    top_airbnb_data = pd.DataFrame()
-    top_airbnb_data = get_shelter_suggestions(chosen_nbr, chosen_amns)
 
-    display(top_airbnb_data)
+    # display(top_airbnb_data)
 
     # top_osm_data = pd.DataFrame()
