@@ -2,6 +2,12 @@ import numpy as np
 import pandas as pd
 # from difflib import get_close_matches
 import sys
+import folium 
+from folium.plugins import MarkerCluster
+from folium import plugins
+from folium.plugins import FloatImage
+
+
 from IPython.display import display
 
 
@@ -165,4 +171,79 @@ if __name__ == '__main__':
     chosen_amn_data.to_csv('../py_output/amenitity-results.csv')
     ranked_airbnb.to_csv('../py_output/airbnb-results.csv')
 
-    # top_osm_data = pd.DataFrame()
+    # Plot data on a map
+    # Create basemap (first recommendation hotel is middle)
+
+    baseRow = ranked_airbnb.iloc[0]
+    baseLat = baseRow['lat']
+    baseLon = baseRow['lon']
+    m = folium.Map(location=[baseLat, baseLon], titles = 'OpenStreetMap',zoom_start=15)
+    markerCluster = MarkerCluster().add_to(m)
+    
+    # # first hotel coordinate (revise later)
+    # first_hotel_lat = ranked_airbnb.at['lat']
+    # first_hotel_lon = ranked_airbnb.at['lon']
+    
+    # circle radius in meter 
+    # make circle from first hotel coordinate 
+    # folium.Circle(radius=200,location=[baseLat, baseLon],tooltip="200m").add_to(m)
+    # folium.Circle(radius=500,location=[baseLat, baseLon],tooltip="500m").add_to(m)
+    # folium.Circle(radius=1000,location=[baseLat, baseLon],tooltip="1000m").add_to(m)
+    
+    # plot 5 hotels
+
+    for i, row in ranked_airbnb.iterrows():
+
+        # lat = ranked_airbnb.at[i,'lat']
+        # lng = ranked_airbnb.at[i,'lon']
+        # url = ranked_airbnb.at[i,'listing_url']
+        # name = ranked_airbnb.at[i,'name']
+
+
+        lat = row['lat']
+        lng = row['lon']
+        url = row['listing_url']
+        name = row['name']
+
+        popup = "#" + str(i+1) + "\nName: " + str(name) + "\nURL: " + url
+
+        if i == 0:
+            color = 'red'
+        else:
+            color = 'blue'
+
+        folium.Marker(location=[lat, lng],popup=popup, icon=folium.Icon(color=color, icon="home")).add_to(markerCluster)
+    
+    
+    # plot amenities 
+    for i, row in chosen_amn_data.iterrows():
+        lat = chosen_amn_data.at[i,'lat']
+        lng = chosen_amn_data.at[i,'lon']
+
+        popup = "#" + str(chosen_amn_data.at[i,'amenity']) + "\nName: " + str(chosen_amn_data.at[i,'name'])
+
+        # sustenance = gray transportation = purple, parking = orange, tourism = pink, park = gree
+        if chosen_amn_data.at[i,'amenity'] == 'sustenance':
+            color = 'gray'
+        elif chosen_amn_data.at[i,'amenity'] == 'transportation':
+            color = 'purple'    
+        elif chosen_amn_data.at[i,'amenity'] == 'parking':
+            color = 'orange'
+        elif chosen_amn_data.at[i,'amenity'] == 'park':
+            color = 'green'                       
+        else:
+            color = 'pink'
+
+        folium.Marker(location=[lat, lng],popup=popup, icon=folium.Icon(color=color)).add_to(markerCluster)
+        
+    # add mini map
+    mini_map = plugins.MiniMap(toggle_display=True)
+    m.add_child(mini_map)
+    
+    # add ledend of map 
+    image_file = 'legend.png'
+    legend = FloatImage(image_file, bottom=2, left=2)
+    m.add_child(legend)
+    
+    # make html file 
+    m.save('../py_output/result.html')    
