@@ -13,9 +13,28 @@ nbr_data = pd.read_csv('./../data_files/clean-nbr-coords.csv')
 
 # combined osm and park data
 amn_data = pd.read_csv('./../data_files/clean-combined-amns.csv') 
-
-
 amn_in_range_data = pd.read_csv('./../data_files/nbr-amenity-is-near.csv') 
+
+
+def haversine(coords1, coords2):
+    # radius of earth & haversine formula: 
+    # https://en.wikipedia.org/wiki/Haversine_formula
+
+    r = 6371000 # in meters
+
+    lat_diff = np.radians(coords1['lat'] - coords2['lat'])
+    lon_diff = np.radians(coords1['lon'] - coords2['lon'])
+    lat1 = np.radians(coords2['lat'])
+    lat2 = np.radians(coords1['lat'])
+
+    h_sin2_lat = np.square(np.sin(lat_diff/2))
+    h_sin2_lon = np.square(np.sin(lon_diff/2))
+    h_sqrt = np.sqrt(h_sin2_lat + (np.cos(lat1) * np.cos(lat2) * h_sin2_lon))
+    h_dist = 2 * r * np.arcsin(h_sqrt)
+
+    return h_dist
+
+
 
 
 def get_shelters_by_amenities(airbnb_nbr, amenities, range):
@@ -85,6 +104,35 @@ def get_desired_amenities(amn_in_range_data, amn_data, range=500):
 
     return chosen_amn_data
 
+def rank_airbnb_listings(airbnb_nbr, chosen_amn_data):
+    numOfListings = airbnb_nbr.shape[0]
+
+    amn_scores = []
+    for i in range (numOfListings):
+        airbnb_row = airbnb_nbr.iloc[i]
+        airbnb_dists = chosen_amn_data.apply(haversine, coords2=airbnb_row, axis=1)
+
+        airbnb_dists_sum = airbnb_dists.sum()
+
+        amn_scores.append(airbnb_dists_sum)
+
+
+    airbnb_nbr['amn_score'] = amn_scores
+
+    # normalize amenitiy distances (scores)
+    new_min, new_max = 1, 5
+    old_min, old_max = airbnb_nbr['amn_score'].min(), airbnb_nbr['amn_score'].max()
+    airbnb_nbr['amn_score'] = (airbnb_nbr['amn_score'] - old_min) / (old_max - old_min) * (new_max - new_min) + new_min
+
+    # display(airbnb_nbr['review_scores_rating'])
+
+    airbnb_nbr['combined_score'] = airbnb_nbr['review_scores_rating'] + airbnb_nbr['amn_score']
+
+    if airbnb_nbr.shape[0] > 5:
+        airbnb_nbr = airbnb_nbr.nlargest(5, ['combined_score'])
+
+    return airbnb_nbr
+
 
 if __name__ == '__main__':
 
@@ -107,8 +155,14 @@ if __name__ == '__main__':
 
     display(chosen_amn_data)
 
+    airbnb_nbr = airbnb_nbr.rename(columns={'latitude': 'lat', 'longitude': 'lon'})
+
+    ranked_airbnb = rank_airbnb_listings(airbnb_nbr, chosen_amn_data)
+
+    display(ranked_airbnb)
 
 
-    # display(top_airbnb_data)
+    chosen_amn_data.to_csv('../py_output/amenitity-results.csv')
+    ranked_airbnb.to_csv('../py_output/airbnb-results.csv')
 
     # top_osm_data = pd.DataFrame()
