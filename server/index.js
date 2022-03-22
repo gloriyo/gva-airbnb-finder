@@ -2,11 +2,19 @@
 
 
 // import router from './routes/main.js';
-import express from 'express';
-import path from 'path';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import fs from 'fs';
+// import express from 'express';
+// import path from 'path';
+// import bodyParser from 'body-parser';
+// import cors from 'cors';
+// import fs from 'fs';
+// import * as child from 'child_process';
+
+const express = require('express')
+const path = require('path')
+const bodyParser = require('body-parser')
+const fs = require('fs')
+const cors = require('cors')
+
 
 const app = express();
 // const path = require("path");
@@ -22,21 +30,21 @@ app.use(cors());
 
 // https://stackoverflow.com/questions/23450534/how-to-call-a-python-function-from-node-js
 
-let runPy = new Promise(function(success, nosuccess) {
+// let runPy = new Promise(function(success, nosuccess) {
 
-    const { spawn } = require('child_process');
-    const pyprog = spawn('python', ['./assets/py_services/get_neighbourhoods.py']);
+//     const { spawn } = require('child_process');
+//     const pyprog = spawn('python', ['./assets/py_services/get_neighbourhoods.py', ]);
 
-    pyprog.stdout.on('data', function(data) {
+//     pyprog.stdout.on('data', function(data) {
 
-        success(data);
-    });
+//         success(data);
+//     });
 
-    pyprog.stderr.on('data', (data) => {
+//     pyprog.stderr.on('data', (data) => {
 
-        nosuccess(data);
-    });
-});
+//         nosuccess(data);
+//     });
+// });
 
 
 
@@ -58,14 +66,40 @@ app.get('/api/getNeighbourhoods', (req, res) => {
 });
 
 app.post('/api/search', (req, res) => {
+    var options = {
+        root: path.join(__dirname)
+    };
+
+
     //to-do: process with find_hotel
     console.log(req.body)
 
-    const { spawn } = require('child_process');
-    const pyprog = spawn('python', ['./assets/py_services/get_neighbourhoods.py']);
+    // var content = JSON.parse(req.body);
+    var content = req.body;
+    var chosen_nbr = content.neighbourhood
+    var chosen_amns = content.amenityPriorityByType
 
-    
+    const { spawn } = require('child_process');
+    const pyprocess = spawn('python', ['./assets/py_services/get_neighbourhoods.py'], content);
+
+    // // https://medium.com/swlh/run-python-script-from-node-js-and-send-data-to-browser-15677fcf199f
+    // pyprocess.stdout.on('data', function (data) {
+    //     console.log('Pipe data from python script ...');
+    //     dataToSend = data.toString();
+    // });
+    // in close event we are sure that stream from child process is closed
+    // pyprocess.on('close', (code) => {
+    //     console.log(`child process close all stdio with code ${code}`);
+    //     // send data to browser
+    //     // res.send(dataToSend)
+    //     res.sendFile('assets/py_output/result.html', options);
+    // });
 });
+app.get('/api/map-result', (req, res) => {
+    res.sendFile('assets/py_output/result.html', options);
+});
+
+
 
 app.get('/api/list', (req, res) => {
     var list = ["Hello", "from", "server"];

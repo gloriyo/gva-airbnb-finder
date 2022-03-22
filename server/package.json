@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "- Simon Fraser University\r - CMPT 353 D100: Computational Data Science\r - Instructor: Steven Bergner\r - Teaching Assistants: Arshdeep Singh Ahuja, Tiange Wan",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node index.js"
   },

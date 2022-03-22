@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import { useNavigate } from "react-router-dom";
+
 import '../form.css';
 // import 'bootstrap/dist/css/bootstrap.css'
 import { Button, Form } from 'react-bootstrap'
@@ -88,18 +90,23 @@ class SearchListings extends Home {
     }
 
     handleSubmit = async e => {
+
         e.preventDefault();
+        let navigate = useNavigate();
         console.log("submitting form");
         alert('submitting form');
 
         try {
             const { data } = await postSearchInputs({...this.state.inputs});
+             
  
         } catch (error) {
             console.log(error.message);
         }
         
+        
         // to-do call /api/getListings
+        navigate('api/map-result');
     }
     
 
@@ -154,9 +161,10 @@ class SearchListings extends Home {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Preferred Amenities</Form.Label>
-                        <Form.Check name="amenityPriorityByType" value="amn1" onChange={this.handleChange} type="checkbox" label="amn1" />
-                        <Form.Check name="amenityPriorityByType" value="amn2" onChange={this.handleChange} type="checkbox" label="amn2" />
-                        <Form.Check name="amenityPriorityByType" value="amn3" onChange={this.handleChange} type="checkbox" label="amn3" />
+                        <Form.Check name="amenityPriorityByType" value="sustenance" onChange={this.handleChange} type="checkbox" label="restaurants" />
+                        <Form.Check name="amenityPriorityByType" value="transportation" onChange={this.handleChange} type="checkbox" label="transportation" />
+                        <Form.Check name="amenityPriorityByType" value="tourism" onChange={this.handleChange} type="checkbox" label="tourist attractions" />
+                        <Form.Check name="amenityPriorityByType" value="parking" onChange={this.handleChange} type="checkbox" label="parking" />
                     </Form.Group>
                     <Button variant="light" className="submitButton" type="submit">Submit</Button>
                 </Form>
