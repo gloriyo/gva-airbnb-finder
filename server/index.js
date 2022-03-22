@@ -20,6 +20,24 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 app.use(cors());
 
 
+// https://stackoverflow.com/questions/23450534/how-to-call-a-python-function-from-node-js
+
+let runPy = new Promise(function(success, nosuccess) {
+
+    const { spawn } = require('child_process');
+    const pyprog = spawn('python', ['./assets/py_services/get_neighbourhoods.py']);
+
+    pyprog.stdout.on('data', function(data) {
+
+        success(data);
+    });
+
+    pyprog.stderr.on('data', (data) => {
+
+        nosuccess(data);
+    });
+});
+
 
 
 // app.use(express.static(path.resolve(__dirname, '../client/build')));
@@ -42,6 +60,11 @@ app.get('/api/getNeighbourhoods', (req, res) => {
 app.post('/api/search', (req, res) => {
     //to-do: process with find_hotel
     console.log(req.body)
+
+    const { spawn } = require('child_process');
+    const pyprog = spawn('python', ['./assets/py_services/get_neighbourhoods.py']);
+
+    
 });
 
 app.get('/api/list', (req, res) => {
