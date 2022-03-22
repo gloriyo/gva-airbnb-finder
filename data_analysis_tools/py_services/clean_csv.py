@@ -43,6 +43,5 @@ combined_data = pd.concat([osm_data, parks_data], ignore_index=True)
 
 # Combined data to csv
 # Data to csv
+# combined_data.rename(columns={'Unnamed: 0': 'id'}, inplace=True)
 combined_data.to_csv('../data_files/clean-combined-amns.csv')
-
-
