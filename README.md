@@ -51,7 +51,7 @@ See [references](#references).
 - [File](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/top-airbnbs.csv) `top-airbnbs.csv`: the top 5 Airbnb listings recommended to the user
 - [File](https://github.com/J-Santella/CMPT-353-Project-OSM-Photos-and-Tours/blob/main/top-amenities.csv) `top-amenities.csv`: the amenities around the Airbnb listings recommended to the user
 
-## Libararies
+## Libraries
 
 1. [NumPy](https://numpy.org/)
 2. [pandas](https://pandas.pydata.org/)
